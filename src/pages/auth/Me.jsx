@@ -22,6 +22,14 @@ const Me = () => {
     favoriteCategory: 'Food'
   })
 
+  const handleLogout = () => {
+    try {
+      sessionStorage.removeItem('jwtToken');
+    } finally {
+      navigate('/login');
+    }
+  };
+
   useEffect(() => {
     const token = sessionStorage.getItem("jwtToken");
   
@@ -93,7 +101,7 @@ const Me = () => {
   
     
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <Navbar />
       {
         (loading) ? 
@@ -195,7 +203,7 @@ const Me = () => {
               </svg>
               Quick Actions
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <button className="flex items-center justify-center p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors duration-200">
                 <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -214,6 +222,13 @@ const Me = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 Settings
+              </button>
+              <button onClick={handleLogout} className="flex items-center justify-center p-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200">
+                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8v8a2 2 0 002 2h3" />
+                </svg>
+                Logout
               </button>
             </div>
           </div>

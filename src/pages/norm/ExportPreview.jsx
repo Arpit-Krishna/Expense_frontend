@@ -212,7 +212,7 @@ const ExportPreview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-indigo-50 dark:from-black dark:via-gray-900 dark:to-gray-800">
       <Navbar />
       {loading ? (
         <div className="flex justify-center items-center min-h-[80vh]">
@@ -222,18 +222,18 @@ const ExportPreview = () => {
       <div className="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-black via-gray-900 to-gray-800 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-black dark:via-gray-900 dark:to-gray-800 rounded-full flex items-center justify-center mb-4">
             <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-100">Export Data Preview</h1>
-          <p className="mt-2 text-lg text-gray-400">Review your expense data before exporting</p>
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Export Data Preview</h1>
+          <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">Review your expense data before exporting</p>
         </div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-800">
+          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-800">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <svg className="h-8 w-8 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,13 +241,13 @@ const ExportPreview = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-400">Total Expenses</p>
-                <p className="text-2xl font-bold text-gray-100">{totalCount}</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-400">Total Expenses</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalCount}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-800">
+          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-800">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <svg className="h-8 w-8 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,13 +255,13 @@ const ExportPreview = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-400">Total Amount</p>
-                <p className="text-2xl font-bold text-gray-100">₹{totalAmount.toFixed(2)}</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-400">Total Amount</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">₹{totalAmount.toFixed(2)}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-800">
+          <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-800">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <svg className="h-8 w-8 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,18 +269,18 @@ const ExportPreview = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-400">Export Format</p>
-                <p className="text-2xl font-bold text-gray-100">{exportFormat.toUpperCase()}</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-400">Export Format</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{exportFormat.toUpperCase()}</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Format Selection */}
-        <div className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 mb-8 border border-gray-800">
-          <h2 className="text-lg font-semibold text-gray-100 mb-4">Choose Export Format</h2>
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 mb-8 border border-gray-200 dark:border-gray-800">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Choose Export Format</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <label className="relative flex cursor-pointer rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm focus:outline-none text-gray-100">
+            <label className="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm focus:outline-none text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
               <input
                 type="radio"
                 name="export-format"
@@ -297,10 +297,10 @@ const ExportPreview = () => {
                   </span>
                 </span>
               </span>
-              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'csv' ? 'border-gray-600' : 'border-transparent'}`}></span>
+              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'csv' ? 'border-indigo-500 dark:border-gray-600' : 'border-transparent'}`}></span>
             </label>
 
-            <label className="relative flex cursor-pointer rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm focus:outline-none text-gray-100">
+            <label className="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm focus:outline-none text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
               <input
                 type="radio"
                 name="export-format"
@@ -317,10 +317,10 @@ const ExportPreview = () => {
                   </span>
                 </span>
               </span>
-              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'json' ? 'border-gray-600' : 'border-transparent'}`}></span>
+              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'json' ? 'border-indigo-500 dark:border-gray-600' : 'border-transparent'}`}></span>
             </label>
 
-            <label className="relative flex cursor-pointer rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm focus:outline-none text-gray-100">
+            <label className="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm focus:outline-none text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
               <input
                 type="radio"
                 name="export-format"
@@ -337,10 +337,10 @@ const ExportPreview = () => {
                   </span>
                 </span>
               </span>
-              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'excel' ? 'border-gray-600' : 'border-transparent'}`}></span>
+              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'excel' ? 'border-indigo-500 dark:border-gray-600' : 'border-transparent'}`}></span>
             </label>
 
-            <label className="relative flex cursor-pointer rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm focus:outline-none text-gray-100">
+            <label className="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-sm focus:outline-none text-gray-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
               <input
                 type="radio"
                 name="export-format"
@@ -357,38 +357,38 @@ const ExportPreview = () => {
                   </span>
                 </span>
               </span>
-              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'pdf' ? 'border-gray-600' : 'border-transparent'}`}></span>
+              <span className={`pointer-events-none absolute -inset-px rounded-lg border-2 ${exportFormat === 'pdf' ? 'border-indigo-500 dark:border-gray-600' : 'border-transparent'}`}></span>
             </label>
           </div>
         </div>
 
         {/* Data Preview Table */}
-        <div className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg overflow-hidden border border-gray-800">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-800">
           <div className="px-6 py-4 border-b border-gray-800">
-            <h2 className="text-lg font-semibold text-gray-100">Expense Data Preview</h2>
-            <p className="text-sm text-gray-400 mt-1">Showing {expenses.length} expenses</p>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Expense Data Preview</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Showing {expenses.length} expenses</p>
           </div>
           
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-800">
-              <thead className="bg-gray-800">
+              <thead className="bg-gray-100 dark:bg-gray-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Title</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Amount</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">ID</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Title</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Amount</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider">Category</th>
                 </tr>
               </thead>
-              <tbody className="bg-gray-900 divide-y divide-gray-800">
+              <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
                 {expenses.map((expense) => (
-                  <tr key={expense.id} className="hover:bg-gray-800">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">{ids++ }</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{expense.title}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">₹{(Number(expense.amount) || 0).toFixed(2)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{new Date(expense.date).toLocaleDateString()}</td>
+                  <tr key={expense.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{ids++ }</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{expense.title}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">₹{(Number(expense.amount) || 0).toFixed(2)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{new Date(expense.date).toLocaleDateString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-800 text-gray-200">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700 dark:bg-gray-800 dark:text-gray-200">
                         {expense.description}
                       </span>
                     </td>
@@ -403,14 +403,14 @@ const ExportPreview = () => {
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={handleCancel}
-            className="px-6 py-3 border border-gray-700 text-gray-200 rounded-md hover:bg-gray-800 transition-colors duration-200 font-medium"
+            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors duration-200 font-medium dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
           >
             Cancel
           </button>
           <button
             onClick={handleExport}
             disabled={isExporting}
-            className="px-6 py-3 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white rounded-md hover:from-black hover:to-gray-900 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="px-6 py-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-md hover:from-indigo-700 hover:to-fuchsia-700 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center dark:from-black dark:via-gray-900 dark:to-gray-800 dark:hover:from-black dark:hover:to-gray-900"
           >
             {isExporting ? (
               <>

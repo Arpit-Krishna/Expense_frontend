@@ -134,7 +134,7 @@ const ExpenseDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-indigo-50 dark:from-black dark:via-gray-900 dark:to-gray-800">
       <Navbar />
       <div className="max-w-2xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -148,17 +148,17 @@ const ExpenseDetail = () => {
             </svg>
             Back to Expenses
           </button>
-          <h1 className="text-3xl font-extrabold text-gray-100">Expense Details</h1>
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Expense Details</h1>
         </div>
 
         {/* Expense Card */}
-        <div className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg overflow-hidden border border-gray-800">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-800">
           {/* Header with amount */}
-          <div className="bg-gradient-to-r from-black via-gray-900 to-gray-800 px-6 py-8 text-white">
+          <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-black dark:via-gray-900 dark:to-gray-800 px-6 py-8 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold">{expense.title}</h2>
-                <div className="flex items-center mt-2 text-gray-200">
+                <div className="flex items-center mt-2 text-gray-100/90">
                   {getCategoryIcon(expense.category)}
                   <span className="ml-2">{expense.category}</span>
                 </div>
@@ -176,25 +176,25 @@ const ExpenseDetail = () => {
             <div className="flex items-center">
               <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(expense.category)}`}>
                 {getCategoryIcon(expense.category)}
-                <span className="ml-2">{expense.category}</span>
+                <span className="ml-2 text-gray-900 dark:text-gray-100">{expense.category}</span>
               </span>
             </div>
 
             {/* Date Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gray-800 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-1">Expense Date</h3>
-                <p className="text-lg text-gray-100">{new Date(expense.date).toLocaleDateString()}</p>
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Expense Date</h3>
+                <p className="text-lg text-gray-900 dark:text-gray-100">{new Date(expense.date).toLocaleDateString()}</p>
               </div>
-              <div className="bg-gray-800 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-400 mb-1">Created</h3>
-                <p className="text-lg text-gray-100">{new Date(expense.createdAt).toLocaleDateString()}</p>
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Created</h3>
+                <p className="text-lg text-gray-900 dark:text-gray-100">{new Date(expense.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
 
             {/* Timestamps */}
-            <div className="border-t border-gray-800 pt-4">
-              <div className="text-sm text-gray-400 space-y-1">
+            <div className="border-t border-gray-200 dark:border-gray-800 pt-4">
+              <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 <p>Created: {new Date(expense.createdAt).toLocaleString()}</p>
                 <p>Last updated: {new Date(expense.updatedAt).toLocaleString()}</p>
               </div>
@@ -205,7 +205,7 @@ const ExpenseDetail = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleEdit}
-                  className="flex-1 flex items-center justify-center px-4 py-2 border border-gray-600 text-gray-200 rounded-md hover:bg-gray-800 transition-colors duration-200"
+                  className="flex-1 flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors duration-200 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
                 >
                   <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -215,7 +215,7 @@ const ExpenseDetail = () => {
                 <button
                   onClick={handleDelete}
                   disabled={isDeleting}
-                  className="flex-1 flex items-center justify-center px-4 py-2 border border-red-600 text-red-400 rounded-md hover:bg-red-900/20 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 flex items-center justify-center px-4 py-2 border border-red-300 text-red-700 rounded-md hover:bg-red-50 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed dark:border-red-600 dark:text-red-400 dark:hover:bg-red-900/20"
                 >
                   {isDeleting ? (
                     <>

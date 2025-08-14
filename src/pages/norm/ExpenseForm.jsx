@@ -99,22 +99,22 @@ const ExpenseForm = () => {
     };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-indigo-50 dark:from-black dark:via-gray-900 dark:to-gray-800">
       <Navbar />
       <div className="max-w-2xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-gray-900 via-gray-800 to-black rounded-full flex items-center justify-center">
+          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-gray-900 dark:via-gray-800 dark:to-black rounded-full flex items-center justify-center">
             <svg className="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 1.343-3 3v5m6-5a3 3 0 00-3-3m-6 8h12m-9 0V8a3 3 0 116 0v8" />
             </svg>
           </div>
-          <h1 className="mt-4 text-3xl font-extrabold text-gray-100">Create Expense</h1>
-          <p className="mt-2 text-sm text-gray-400">Add a new expense to track your spending</p>
+          <h1 className="mt-4 text-3xl font-extrabold text-gray-900 dark:text-gray-100">Create Expense</h1>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Add a new expense to track your spending</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 space-y-5 border border-gray-800">
+        <form onSubmit={handleSubmit} className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 space-y-5 border border-gray-200 dark:border-gray-800">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-300">Title</label>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
             <input
               id="title"
               name="title"
@@ -122,13 +122,13 @@ const ExpenseForm = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="e.g., Grocery shopping"
-              className={`mt-1 block w-full rounded-md border ${errors.title ? 'border-red-500' : 'border-gray-700'} px-3 py-2 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm`}
+              className={`mt-1 block w-full rounded-md border ${errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} px-3 py-2 bg-white text-gray-900 placeholder-gray-400 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-gray-500 focus:border-indigo-400 dark:focus:border-gray-500 sm:text-sm`}
             />
             {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
           </div>
 
           <div>
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-300">Amount</label>
+            <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Amount</label>
             <input
               id="amount"
               name="amount"
@@ -138,19 +138,19 @@ const ExpenseForm = () => {
               value={formData.amount}
               onChange={handleChange}
               placeholder="0.00"
-              className={`mt-1 block w-full rounded-md border ${errors.amount ? 'border-red-500' : 'border-gray-700'} px-3 py-2 bg-gray-800 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm`}
+              className={`mt-1 block w-full rounded-md border ${errors.amount ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} px-3 py-2 bg-white text-gray-900 placeholder-gray-400 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-gray-500 focus:border-indigo-400 dark:focus:border-gray-500 sm:text-sm`}
             />
             {errors.amount && <p className="mt-1 text-sm text-red-400">{errors.amount}</p>}
           </div>
 
           <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-300">Category</label>
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
             <select
               id="category"
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className={`mt-1 block w-full rounded-md border ${errors.category ? 'border-red-500' : 'border-gray-700'} px-3 py-2 bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 sm:text-sm`}
+              className={`mt-1 block w-full rounded-md border ${errors.category ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} px-3 py-2 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-gray-500 focus:border-indigo-400 dark:focus:border-gray-500 sm:text-sm`}
             >
               <option value="" disabled>Select a category</option>
               {categories.map(cat => (
@@ -164,7 +164,7 @@ const ExpenseForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full justify-center inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-gray-900 via-gray-800 to-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-black hover:to-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full justify-center inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-indigo-700 hover:to-fuchsia-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors dark:from-gray-900 dark:via-gray-800 dark:to-black dark:hover:from-black dark:hover:to-gray-900 dark:focus-visible:outline-gray-700"
             >
               {isSubmitting ? (
                 <>

@@ -100,18 +100,18 @@ const Signup = () => {
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-indigo-50 dark:from-black dark:via-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-black via-gray-900 to-gray-800 rounded-full flex items-center justify-center">
+          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-black dark:via-gray-900 dark:to-gray-800 rounded-full flex items-center justify-center">
             <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-100">
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
             Create your account
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Join us and start managing your expenses today
           </p>
         </div>
@@ -121,7 +121,7 @@ const Signup = () => {
             {/* Name Fields */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-300">
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   First Name
                 </label>
                 <input
@@ -132,8 +132,8 @@ const Signup = () => {
                   value={formData.firstName}
                   onChange={handleChange}
                   className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                    errors.firstName ? 'border-red-500' : 'border-gray-700'
-                  } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                    errors.firstName ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                  } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                   placeholder="John"
                 />
                 {errors.firstName && (
@@ -142,7 +142,7 @@ const Signup = () => {
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-300">
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Last Name
                 </label>
                 <input
@@ -153,8 +153,8 @@ const Signup = () => {
                   value={formData.lastName}
                   onChange={handleChange}
                   className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                    errors.lastName ? 'border-red-500' : 'border-gray-700'
-                  } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                    errors.lastName ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                  } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                   placeholder="Doe"
                 />
                 {errors.lastName && (
@@ -165,7 +165,7 @@ const Signup = () => {
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Email Address
               </label>
               <input
@@ -177,8 +177,8 @@ const Signup = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.email ? 'border-red-500' : 'border-gray-700'
-                } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                  errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                 placeholder="john@example.com"
               />
               {errors.email && (
@@ -188,7 +188,7 @@ const Signup = () => {
 
             {/* Phone Number Field */}
             <div>
-              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Phone Number
               </label>
               <input
@@ -200,8 +200,8 @@ const Signup = () => {
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.phoneNumber ? 'border-red-500' : 'border-gray-700'
-                } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                  errors.phoneNumber ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                 placeholder="+1 (555) 123-4567"
               />
               {errors.phoneNumber && (
@@ -211,7 +211,7 @@ const Signup = () => {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Password
               </label>
               <div className="relative">
@@ -224,8 +224,8 @@ const Signup = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className={`mt-1 appearance-none relative block w-full px-3 py-2 pr-10 border ${
-                    errors.password ? 'border-red-500' : 'border-gray-700'
-                  } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                    errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                  } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                   placeholder="••••••••"
                 />
                 <button
@@ -252,7 +252,7 @@ const Signup = () => {
 
             {/* Confirm Password Field */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Confirm Password
               </label>
               <div className="relative">
@@ -265,8 +265,8 @@ const Signup = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className={`mt-1 appearance-none relative block w-full px-3 py-2 pr-10 border ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-700'
-                  } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                  } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                   placeholder="••••••••"
                 />
                 <button
@@ -300,17 +300,17 @@ const Signup = () => {
                   type="checkbox"
                   checked={formData.agreeToTerms}
                   onChange={handleChange}
-                  className="focus:ring-gray-500 h-4 w-4 text-gray-300 border-gray-700 rounded bg-gray-800"
+                  className="focus:ring-indigo-400 h-4 w-4 text-indigo-600 border-gray-300 rounded bg-white dark:focus:ring-gray-500 dark:text-gray-300 dark:border-gray-700 dark:bg-gray-800"
                 />
               </div>
               <div className="ml-3 text-sm">
-                <label htmlFor="agreeToTerms" className="font-medium text-gray-300">
+                <label htmlFor="agreeToTerms" className="font-medium text-gray-700 dark:text-gray-300">
                   I agree to the{' '}
-                  <a href="#" className="text-gray-300 hover:text-white">
+                  <a href="#" className="text-indigo-600 hover:text-indigo-700 dark:text-gray-300 dark:hover:text-white">
                     Terms and Conditions
                   </a>{' '}
                   and{' '}
-                  <a href="#" className="text-gray-300 hover:text-white">
+                  <a href="#" className="text-indigo-600 hover:text-indigo-700 dark:text-gray-300 dark:hover:text-white">
                     Privacy Policy
                   </a>
                 </label>
@@ -326,7 +326,7 @@ const Signup = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-black via-gray-900 to-gray-800 hover:from-black hover:to-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 hover:from-indigo-700 hover:to-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 dark:from-black dark:via-gray-900 dark:to-gray-800 dark:hover:from-black dark:hover:to-gray-900 dark:focus:ring-gray-700"
             >
               {isSubmitting ? (
                 <div className="flex items-center">

@@ -10,4 +10,8 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  css: {
+    // Ensure Tailwind/PostCSS processes @custom-variant instead of Lightning CSS
+    transformer: 'postcss'
+  }
 });

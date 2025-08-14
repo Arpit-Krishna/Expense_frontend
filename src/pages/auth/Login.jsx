@@ -87,18 +87,18 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-indigo-50 dark:from-black dark:via-gray-900 dark:to-gray-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-black via-gray-900 to-gray-800 rounded-full flex items-center justify-center">
+          <div className="mx-auto h-12 w-12 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-black dark:via-gray-900 dark:to-gray-800 rounded-full flex items-center justify-center">
             <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
             </svg>
           </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-100">
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-gray-100">
             Welcome back
           </h2>
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             Sign in to your account to continue
           </p>
         </div>
@@ -107,7 +107,7 @@ const Login = () => {
           <div className="space-y-4">
             {/* Username Field */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Full Name
               </label>
               <input
@@ -119,8 +119,8 @@ const Login = () => {
                 value={formData.username}
                 onChange={handleChange}
                 className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.username ? 'border-red-500' : 'border-gray-700'
-                } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                  errors.username ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                 placeholder="Enter your full name"
               />
               {errors.username && (
@@ -130,7 +130,7 @@ const Login = () => {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Password
               </label>
               <div className="relative">
@@ -143,8 +143,8 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   className={`mt-1 appearance-none relative block w-full px-3 py-2 pr-10 border ${
-                    errors.password ? 'border-red-500' : 'border-gray-700'
-                  } placeholder-gray-500 bg-gray-800 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm`}
+                    errors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                  } placeholder-gray-400 bg-white text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 focus:z-10 sm:text-sm dark:placeholder-gray-500 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-gray-500 dark:focus:border-gray-500`}
                   placeholder="••••••••"
                 />
                 <button
