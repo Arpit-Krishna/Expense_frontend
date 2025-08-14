@@ -1,4 +1,4 @@
-import Signup from './pages/auth/Signup'
+import Signup from './pages/auth/SignUp'
 import Login from './pages/auth/Login'
 import Home from './pages/norm/Home'
 import ExpenseForm from './pages/norm/ExpenseForm'
