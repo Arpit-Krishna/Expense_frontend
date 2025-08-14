@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../lib/api';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -62,7 +63,7 @@ const Login = () => {
       };
   
       const res = await axios.post(
-        "http://localhost:8080/auth/login",
+        `${API_BASE}/auth/login`,
         payload,
         {
           headers: {
@@ -215,7 +216,7 @@ const Login = () => {
           <div className="text-center">
             <p className="text-sm text-gray-400">
               Don't have an account?{' '}
-              <a href="#" className="font-medium text-gray-300 hover:text-white transition-colors duration-200">
+              <a href="/signup" className="font-medium text-gray-300 hover:text-white transition-colors duration-200">
                 Sign up here
               </a>
             </p>

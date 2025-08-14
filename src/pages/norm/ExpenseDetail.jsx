@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
+import { API_BASE } from '../../lib/api';
 
 const ExpenseDetail = () => {
   const { id } = useParams();
   // console.log(id);
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [expense, setExpense] = useState({});
 
@@ -21,13 +23,12 @@ const ExpenseDetail = () => {
 
     const fetchExpense = async(id) => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/expense/${id}`, {
+        const res = await axios.get(`${API_BASE}/api/expense/${id}`, {
           headers: { "Authorization": token }
         });
 
         console.log("Fetched expense:", res.data);
         
-        // Assuming backend returns Page<Expense>
         setExpense(res.data);
 
       } catch (error) {
@@ -38,7 +39,6 @@ const ExpenseDetail = () => {
   },[id, navigate]);
 
   const handleEdit = () => {
-    // Navigate to edit page or open edit modal
     console.log('Edit expense:', expense.id);
     alert('Edit functionality will be implemented here');
   };
@@ -50,7 +50,7 @@ const ExpenseDetail = () => {
   
     try {
       const token = sessionStorage.getItem("jwtToken"); 
-      const res = await axios.delete(`http://localhost:8080/api/expense/${expense.id}`, {
+      const res = await axios.delete(`${API_BASE}/api/expense/${expense.id}`, {
         headers: {
           "Authorization": token
         }

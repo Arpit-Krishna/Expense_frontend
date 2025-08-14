@@ -1,52 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from '../components/Navbar';
+import { PacmanLoader } from 'react-spinners';
+import { API_BASE } from '../../lib/api'
+ 
 
 const ExportPreview = () => {
   const navigate = useNavigate();
   const [isExporting, setIsExporting] = useState(false);
   const [exportFormat, setExportFormat] = useState('csv');
 
-  // Mock data - replace with actual expense data from your backend
-  const expenses = [
-    {
-      id: 1,
-      title: 'Groceries',
-      amount: 54.99,
-      date: '2024-06-01',
-      category: 'Food',
-    },
-    {
-      id: 2,
-      title: 'Internet Bill',
-      amount: 39.99,
-      date: '2024-06-03',
-      category: 'Utilities',
-    },
-    {
-      id: 3,
-      title: 'Movie Night',
-      amount: 15.00,
-      date: '2024-06-05',
-      category: 'Entertainment',
-    },
-    {
-      id: 4,
-      title: 'Gym Membership',
-      amount: 29.99,
-      date: '2024-06-07',
-      category: 'Health',
-    },
-    {
-      id: 5,
-      title: 'Coffee',
-      amount: 4.50,
-      date: '2024-06-08',
-      category: 'Food',
-    },
-  ];
+  const [loading, setLoading] = useState(false);
 
-  const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  // Mock data - replace with actual expense data from your backend
+  const [expenses, setExpenses] = useState([]);
+  var ids = 1;
+
+  useEffect(() => {
+      const token = sessionStorage.getItem("jwtToken");
+      if (!token) {
+        console.error("No JWT token found in sessionStorage");
+        navigate("/login");
+        return;
+      }
+
+      const fetchExpense = async() => {
+        try{
+          setLoading(true);
+          const res = await axios.get(`${API_BASE}/api/expense/summary`, {
+            headers: { "Authorization": `${token}` },
+          });
+
+          console.log("Fetched expenses:", res.data);
+
+        if (res.data.totalItems === 0) {
+          alert("No Expenses found!! Create a new expense...");
+          navigate("/create-expense");
+        }
+
+        setExpenses(res.data.expenses || []);
+        }
+      catch (err) {
+        console.error("Error fetching expenses:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchExpense();
+  }
+    ,[navigate]);
+  const totalAmount = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
   const totalCount = expenses.length;
 
   const handleExport = () => {
@@ -100,10 +104,9 @@ const ExportPreview = () => {
       }
 
       case 'pdf': {
-        // Generate PDF content using HTML
-        const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+        const totalAmount = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
         const currentDate = new Date().toLocaleDateString();
-        
+      
         content = `
           <!DOCTYPE html>
           <html>
@@ -159,8 +162,8 @@ const ExportPreview = () => {
                   <tr>
                     <td>${expense.id}</td>
                     <td>${expense.title}</td>
-                    <td class="amount">$${expense.amount.toFixed(2)}</td>
-                    <td>${expense.date}</td>
+                    <td class="amount">₹${(Number(expense.amount) || 0).toFixed(2)}</td>
+                    <td>${new Date(expense.date).toLocaleDateString()}</td>
                     <td><span class="category">${expense.category}</span></td>
                   </tr>
                 `).join('')}
@@ -173,11 +176,12 @@ const ExportPreview = () => {
           </body>
           </html>
         `;
+      
         mimeType = 'application/pdf';
         fileExtension = 'pdf';
         break;
       }
-
+      
       default:
         content = '';
         mimeType = 'text/plain';
@@ -210,6 +214,11 @@ const ExportPreview = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800">
       <Navbar />
+      {loading ? (
+        <div className="flex justify-center items-center min-h-[80vh]">
+          <PacmanLoader color="#facc15" size={35} />
+        </div>
+      ) : (
       <div className="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -247,7 +256,7 @@ const ExportPreview = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-400">Total Amount</p>
-                <p className="text-2xl font-bold text-gray-100">${totalAmount.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-gray-100">₹{totalAmount.toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -374,13 +383,13 @@ const ExportPreview = () => {
               <tbody className="bg-gray-900 divide-y divide-gray-800">
                 {expenses.map((expense) => (
                   <tr key={expense.id} className="hover:bg-gray-800">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">{expense.id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">{ids++ }</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{expense.title}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">${expense.amount.toFixed(2)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{expense.date}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">₹{(Number(expense.amount) || 0).toFixed(2)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">{new Date(expense.date).toLocaleDateString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-800 text-gray-200">
-                        {expense.category}
+                        {expense.description}
                       </span>
                     </td>
                   </tr>
@@ -422,6 +431,8 @@ const ExportPreview = () => {
           </button>
         </div>
       </div>
+      )
+    }
     </div>
   );
 };

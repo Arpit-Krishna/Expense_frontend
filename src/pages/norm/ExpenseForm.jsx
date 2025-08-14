@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../lib/api';
 
 const initialForm = {
   title: '',
@@ -78,7 +79,7 @@ const ExpenseForm = () => {
         description: formData.category 
         };
 
-        const res = await axios.post("http://localhost:8080/api/expense", payload, {
+        const res = await axios.post(`${API_BASE}/api/expense`, payload, {
         headers: {
             "Authorization": `${token}`,
             "Content-Type": "application/json"

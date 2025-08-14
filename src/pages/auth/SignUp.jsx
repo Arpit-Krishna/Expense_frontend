@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from '../../lib/api';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -76,7 +77,7 @@ const Signup = () => {
       };
   
       const res = await axios.post(
-        "http://localhost:8080/auth/signup",
+        `${API_BASE}/auth/signup`,
         payload,
         {
           headers: {
