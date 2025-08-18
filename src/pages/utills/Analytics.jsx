@@ -1,4 +1,4 @@
-// utils/analytics.js
+
 import dayjs from "dayjs";
 
 // Group by category
@@ -15,7 +15,7 @@ export function getCategoryBreakdown(expenses) {
 export function getMonthlyTrend(expenses) {
   const trend = {};
   expenses.forEach(exp => {
-    const month = dayjs(exp.date).format("MMM"); // e.g. "Jan", "Feb"
+    const month = dayjs(exp.date).format("MMM");
     if (!trend[month]) trend[month] = 0;
     trend[month] += exp.amount;
   });
