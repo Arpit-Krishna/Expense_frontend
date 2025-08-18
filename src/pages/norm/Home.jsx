@@ -17,6 +17,20 @@ const Home = () => {
   const itemsPerPage = 5;
   const navigate = useNavigate();
 
+  // 🔹 Predefined categories (instead of extracting from data dynamically)
+  const predefinedCategories = [
+    'all',
+    'Food',
+    'Transport',
+    'Utilities',
+    'Entertainment',
+    'Health',
+    'Shopping',
+    'Education',
+    'Travel',
+    'Other'
+  ];
+
   useEffect(() => {
     const token = sessionStorage.getItem("jwtToken");
     if (!token) {
@@ -55,12 +69,13 @@ const Home = () => {
     };
 
     fetchExpenses();
-  }, [currentPage, sortBy, sortDirection, selectedCategory, navigate]);
+  }, [currentPage, sortBy, sortDirection, navigate]);
 
-  const categories = useMemo(() => {
-    const uniqueCategories = [...new Set(expenses.map(expense => expense.category))];
-    return ['all', ...uniqueCategories];
-  }, [expenses]);
+  // 🔹 Filter logic based on category selection
+  const filteredExpenses = useMemo(() => {
+    if (selectedCategory === 'all') return expenses;
+    return expenses.filter(expense => expense.description === selectedCategory);
+  }, [expenses, selectedCategory]);
 
   const handleExpenseClick = (expenseId) => {
     navigate(`/expense/${expenseId}`);
@@ -80,6 +95,7 @@ const Home = () => {
 
           {/* Filters */}
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 mb-6 flex flex-col sm:flex-row gap-4 items-center justify-between border border-gray-200 dark:border-gray-800">
+            {/* 🔹 Category Filter */}
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Category:</label>
               <select
@@ -90,7 +106,7 @@ const Home = () => {
                 }}
                 className="border border-gray-300 bg-white text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:focus:ring-gray-500"
               >
-                {categories.map(category => (
+                {predefinedCategories.map(category => (
                   <option key={category} value={category}>
                     {category === 'all' ? 'All Categories' : category}
                   </option>
@@ -133,12 +149,12 @@ const Home = () => {
 
           {/* Expenses List */}
           <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-800">
-            {expenses.length === 0 ? (
-              <p className="text-center text-gray-600 dark:text-gray-400">No expenses found.</p>
+            {filteredExpenses.length === 0 ? (
+              <p className="text-center text-gray-600 dark:text-gray-400">No expenses found in this category.</p>
             ) : (
               <>
                 <ul className="space-y-4 mb-6">
-                  {expenses.map(expense => (
+                  {filteredExpenses.map(expense => (
                     <li
                       key={expense.id}
                       className="flex flex-col sm:flex-row sm:items-center justify-between py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
@@ -146,7 +162,7 @@ const Home = () => {
                     >
                       <div className="flex-1">
                         <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">{expense.title}</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">{expense.category} &bull; {new Date(expense.date).toLocaleDateString()}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">{expense.description} • {new Date(expense.date).toLocaleDateString()}</div>
                       </div>
                       <div className="mt-2 sm:mt-0 sm:ml-6 text-xl font-bold text-gray-900 dark:text-gray-100">
                         ₹{expense.amount.toFixed(2)}

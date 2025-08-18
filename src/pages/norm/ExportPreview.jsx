@@ -4,6 +4,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { PacmanLoader } from 'react-spinners';
 import { API_BASE } from '../../lib/api'
+import html2pdf from 'html2pdf.js';
  
 
 const ExportPreview = () => {
@@ -69,7 +70,7 @@ const ExportPreview = () => {
             `"${expense.title}"`,
             expense.amount,
             expense.date,
-            `"${expense.category}"`
+            `"${expense.description}"`
           ].join(','))
         ].join('\n');
         mimeType = 'text/csv;charset=utf-8;';
@@ -95,7 +96,7 @@ const ExportPreview = () => {
             `"${expense.title}"`,
             expense.amount,
             expense.date,
-            `"${expense.category}"`
+            `"${expense.description}"`
           ].join(','))
         ].join('\n');
         mimeType = 'application/vnd.ms-excel;charset=utf-8;';
@@ -106,7 +107,7 @@ const ExportPreview = () => {
       case 'pdf': {
         const totalAmount = expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
         const currentDate = new Date().toLocaleDateString();
-      
+        ids = 1;
         content = `
           <!DOCTYPE html>
           <html>
@@ -125,9 +126,9 @@ const ExportPreview = () => {
               table { width: 100%; border-collapse: collapse; margin-top: 20px; }
               th { background-color: #111827; color: #F9FAFB; padding: 12px; text-align: left; font-weight: bold; border-bottom: 2px solid #1f2937; }
               td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
-              .category { background-color: #1f2937; color: #F3F4F6; padding: 4px 8px; border-radius: 12px; font-size: 12px; }
+              .category {color:rgb(5, 5, 5); padding-right: 8px; padding-left: 8px; border-radius: 12px; font-size: 14px; font-weight: bold }
               .amount { font-weight: bold; color: #059669; }
-              .footer { margin-top: 30px; text-align: center; color: #6b7280; font-size: 12px; }
+              .footer { margin-top: 20px; text-align: center; color: #6b7280; font-size: 12px; }
             </style>
           </head>
           <body>
@@ -160,11 +161,11 @@ const ExportPreview = () => {
               <tbody>
                 ${expenses.map(expense => `
                   <tr>
-                    <td>${expense.id}</td>
+                    <td>${ids++}</td>
                     <td>${expense.title}</td>
                     <td class="amount">₹${(Number(expense.amount) || 0).toFixed(2)}</td>
                     <td>${new Date(expense.date).toLocaleDateString()}</td>
-                    <td><span class="category">${expense.category}</span></td>
+                    <td><span class="category">${expense.description}</span></td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -177,9 +178,17 @@ const ExportPreview = () => {
           </html>
         `;
       
-        mimeType = 'application/pdf';
-        fileExtension = 'pdf';
-        break;
+        const options = {
+          margin: 0.5,
+          filename: `expense-report-${currentDate}.pdf`,
+          image: { type: "jpeg", quality: 1 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        };
+    
+        html2pdf().from(content).set(options).save();
+        setIsExporting(false);
+        return;
       }
       
       default:
