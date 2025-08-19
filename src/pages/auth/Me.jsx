@@ -228,7 +228,7 @@ const Me = () => {
               <button className="flex items-center justify-center p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700">
                 + Add New Expense
               </button>
-              <button className="p-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+              <button onClick={() => navigate("/export")} className="p-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
                 📊 View Reports
               </button>
               <button className="p-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
