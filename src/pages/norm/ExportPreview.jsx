@@ -62,11 +62,12 @@ const ExportPreview = () => {
     switch (exportFormat) {
       case 'csv': {
         // Convert to CSV format
+        ids = 1;
         const headers = ['ID', 'Title', 'Amount', 'Date', 'Category'];
         content = [
           headers.join(','),
           ...expenses.map(expense => [
-            expense.id,
+            ids++,
             `"${expense.title}"`,
             expense.amount,
             expense.date,
@@ -80,7 +81,18 @@ const ExportPreview = () => {
 
       case 'json': {
         // Convert to JSON format
-        content = JSON.stringify(expenses, null, 2);
+        ids = 1;
+
+        const filteredExpenses = expenses.map(expense => ({
+          id: ids++,
+          title: expense.title,
+          date: expense.date,
+          amount: expense.amount,
+          description: expense.description
+        }));
+
+
+        content = JSON.stringify(filteredExpenses, null, 2);
         mimeType = 'application/json;charset=utf-8;';
         fileExtension = 'json';
         break;
@@ -89,10 +101,11 @@ const ExportPreview = () => {
       case 'excel': {
         // Convert to Excel format (CSV with Excel MIME type)
         const excelHeaders = ['ID', 'Title', 'Amount', 'Date', 'Category'];
+        ids = 1;
         content = [
           excelHeaders.join(','),
           ...expenses.map(expense => [
-            expense.id,
+            ids++,
             `"${expense.title}"`,
             expense.amount,
             expense.date,
