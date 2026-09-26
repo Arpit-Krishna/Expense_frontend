@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom';
 import { categoryInfo, expenseCategory, expenseNote } from '../lib/categories';
 import { formatDate, money } from '../lib/format';
+import CategoryIcon from './CategoryIcon';
 
-export default function ExpenseRow({ expense }) {
-  const cat = categoryInfo(expenseCategory(expense));
+export default function ExpenseRow({ expense, showDate = true }) {
+  const name = expenseCategory(expense);
+  const cat = categoryInfo(name);
   const note = expenseNote(expense);
+  const meta = [cat.label, showDate && formatDate(expense.date), note].filter(Boolean).join(' · ');
   return (
     <li>
-      <Link to={`/expenses/${expense.id}`} className="flex items-center gap-3 rounded-xl px-2 py-3 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-lg" style={{ backgroundColor: `${cat.color}22` }}>{cat.icon}</span>
+      <Link to={`/expenses/${expense.id}`}
+        className="group -mx-2 flex items-center gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-subtle focus-visible:bg-subtle focus-visible:outline-none">
+        <CategoryIcon name={name} />
         <div className="min-w-0 flex-1">
-          <p className="truncate font-medium">{expense.title}</p>
-          <p className="truncate text-sm muted">{cat.label} · {formatDate(expense.date)}{note ? ` · ${note}` : ''}</p>
+          <p className="truncate text-[15px] font-medium">{expense.title}</p>
+          <p className="truncate text-sm text-muted">{meta}</p>
         </div>
-        <span className="shrink-0 font-semibold tabular-nums">{money(expense.amount)}</span>
+        <span className="amount shrink-0 text-[15px] font-medium">{money(expense.amount)}</span>
       </Link>
     </li>
   );

@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import {
+  ChartBar, DownloadSimple, House, Monitor, Moon, Plus, Receipt, SignOut, Sun, Target, UserCircle,
+} from '../lib/icons';
+import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { clearToken } from '../lib/api';
 
 const LINKS = [
@@ -10,32 +13,114 @@ const LINKS = [
   { to: '/export', label: 'Export' },
 ];
 
+const MOBILE_LINKS = [
+  { to: '/', label: 'Home', icon: House, end: true },
+  { to: '/expenses', label: 'Expenses', icon: Receipt, end: true },
+  { to: '/expenses/new', label: 'Add', icon: Plus, primary: true },
+  { to: '/budgets', label: 'Budgets', icon: Target },
+  { to: '/insights', label: 'Insights', icon: ChartBar },
+];
+
+const THEMES = [
+  { key: 'system', label: 'System', icon: Monitor },
+  { key: 'light', label: 'Light', icon: Sun },
+  { key: 'dark', label: 'Dark', icon: Moon },
+];
+
+function readTheme() {
+  try {
+    const t = localStorage.getItem('theme');
+    return t === 'light' || t === 'dark' ? t : 'system';
+  } catch {
+    return 'system';
+  }
+}
+
+/** Light, dark, or follow the device. The choice is stored under the same key index.html reads. */
 function useTheme() {
-  const [isDark, setIsDark] = useState(() => {
-    const stored = localStorage.getItem('theme');
-    return stored ? stored === 'dark' : window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-  });
+  const [theme, setTheme] = useState(readTheme);
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDark);
-  }, [isDark]);
-  const toggle = () => {
-    localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    setIsDark(!isDark);
-  };
-  return [isDark, toggle];
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+    const apply = () => {
+      const dark = theme === 'dark' || (theme === 'system' && media?.matches);
+      document.documentElement.classList.toggle('dark', Boolean(dark));
+    };
+    apply();
+    try {
+      if (theme === 'system') localStorage.removeItem('theme');
+      else localStorage.setItem('theme', theme);
+    } catch { /* storage can be blocked */ }
+    if (theme !== 'system' || !media) return undefined;
+    media.addEventListener('change', apply);
+    return () => media.removeEventListener('change', apply);
+  }, [theme]);
+  return [theme, setTheme];
 }
 
 const linkClass = ({ isActive }) =>
-  `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-    isActive
-      ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300'
-      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+  `relative rounded-md px-3 py-1.5 text-sm transition-colors ${
+    isActive ? 'bg-subtle font-medium text-ink' : 'text-muted hover:text-ink'
   }`;
+
+function AccountMenu({ theme, setTheme, onLogout }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const location = useLocation();
+
+  useEffect(() => setOpen(false), [location.pathname]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDown = (e) => { if (!ref.current?.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button onClick={() => setOpen(!open)} className="btn btn-ghost h-9 w-9 p-0" aria-label="Account and settings" aria-expanded={open} aria-haspopup="menu">
+        <UserCircle size={22} />
+      </button>
+      {open && (
+        <div role="menu" className="rise absolute right-0 z-50 mt-2 w-60 rounded-lg border border-line bg-surface p-1.5 shadow-[0_12px_40px_rgba(26,26,25,0.10)]">
+          <Link to="/profile" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle">
+            <UserCircle size={17} className="text-muted" /> Profile
+          </Link>
+          <Link to="/export" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle md:hidden">
+            <DownloadSimple size={17} className="text-muted" /> Export
+          </Link>
+          <div className="my-1.5 border-t border-line" />
+          <p className="eyebrow px-2.5 pb-1.5 pt-1">Appearance</p>
+          <div className="grid grid-cols-3 gap-1 px-1 pb-1" role="radiogroup" aria-label="Theme">
+            {THEMES.map(({ key, label, icon }) => {
+              const Icon = icon;
+              return (
+              <button key={key} role="radio" aria-checked={theme === key} onClick={() => setTheme(key)}
+                className={`flex flex-col items-center gap-1 rounded-md border px-1 py-2 text-xs transition-colors ${
+                  theme === key ? 'border-ink bg-subtle text-ink' : 'border-transparent text-muted hover:bg-subtle hover:text-ink'}`}>
+                <Icon size={16} />{label}
+              </button>
+              );
+            })}
+          </div>
+          <div className="my-1.5 border-t border-line" />
+          <button onClick={onLogout} role="menuitem" className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm text-bad-ink hover:bg-bad-soft">
+            <SignOut size={17} /> Log out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Layout() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  const [isDark, toggleTheme] = useTheme();
+  const [theme, setTheme] = useTheme();
 
   const logout = () => {
     clearToken();
@@ -43,52 +128,52 @@ export default function Layout() {
   };
 
   return (
-    <div className="min-h-screen pb-24 md:pb-10">
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
-          <NavLink to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-600 text-white">₹</span>
+    <div className="min-h-dvh pb-28 md:pb-16">
+      <a href="#main" className="sr-only z-50 rounded-md bg-ink px-3 py-2 text-sm text-on-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-3">Skip to content</a>
+      <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur-md">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
+          <NavLink to="/" className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
+            <img src="/favicon.svg" alt="" className="h-7 w-7 dark:invert" />
             Expensify
           </NavLink>
-          <nav className="ml-4 hidden items-center gap-1 md:flex">
+          <nav className="ml-6 hidden items-center gap-0.5 md:flex" aria-label="Main">
             {LINKS.map((l) => <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>{l.label}</NavLink>)}
           </nav>
-          <div className="ml-auto flex items-center gap-2">
-            <NavLink to="/expenses/new" className="btn btn-primary hidden sm:inline-flex">+ Add expense</NavLink>
-            <button onClick={toggleTheme} className="btn btn-ghost px-2.5" aria-label="Toggle dark mode" title="Toggle dark mode">
-              {isDark ? '☀️' : '🌙'}
-            </button>
-            <div className="relative">
-              <button onClick={() => setOpen(!open)} className="btn btn-ghost px-2.5" aria-label="Account menu" aria-expanded={open}>👤</button>
-              {open && (
-                <div className="absolute right-0 mt-2 w-44 rounded-xl border border-slate-200 bg-white p-1 shadow-lg dark:border-slate-800 dark:bg-slate-900" onMouseLeave={() => setOpen(false)}>
-                  <NavLink to="/profile" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800">Profile</NavLink>
-                  <button onClick={logout} className="block w-full rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-slate-100 dark:hover:bg-slate-800">Log out</button>
-                </div>
-              )}
-            </div>
+          <div className="ml-auto flex items-center gap-1.5">
+            <NavLink to="/expenses/new" className="btn btn-primary hidden h-9 sm:inline-flex">
+              <Plus size={15} weight="bold" /> Add expense
+            </NavLink>
+            <AccountMenu theme={theme} setTheme={setTheme} onLogout={logout} />
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-6">
+      <main id="main" className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
         <Outlet />
       </main>
 
       {/* Mobile bottom navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-slate-200 bg-white/95 backdrop-blur md:hidden dark:border-slate-800 dark:bg-slate-950/95">
-        {[
-          { to: '/', label: 'Home', icon: '🏠', end: true },
-          { to: '/expenses', label: 'Expenses', icon: '🧾', end: true },
-          { to: '/expenses/new', label: 'Add', icon: '➕' },
-          { to: '/budgets', label: 'Budgets', icon: '🎯' },
-          { to: '/insights', label: 'Insights', icon: '📊' },
-        ].map((l) => (
-          <NavLink key={l.to} to={l.to} end={l.end}
-            className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2 text-xs ${isActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}`}>
-            <span className="text-lg leading-none">{l.icon}</span>{l.label}
-          </NavLink>
-        ))}
+      <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden">
+        <div className="grid grid-cols-5">
+          {MOBILE_LINKS.map(({ to, label, icon, end, primary }) => {
+            const Icon = icon;
+            return (
+            <NavLink key={to} to={to} end={end}
+              className={({ isActive }) => `flex flex-col items-center gap-1 pb-2 pt-2.5 text-[11px] font-medium transition-colors ${isActive ? 'text-ink' : 'text-muted'}`}>
+              {({ isActive }) => (
+                <>
+                  {primary ? (
+                    <span className="grid h-[22px] w-10 place-items-center rounded-md bg-ink text-on-ink"><Icon size={15} weight="bold" /></span>
+                  ) : (
+                    <Icon size={22} weight={isActive ? 'fill' : 'regular'} />
+                  )}
+                  {label}
+                </>
+              )}
+            </NavLink>
+            );
+          })}
+        </div>
       </nav>
     </div>
   );

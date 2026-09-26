@@ -2,45 +2,179 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Warm monochrome palette. Components use these tokens, so dark mode is a variable swap. */
+:root {
+  --canvas: #f7f6f3;
+  --surface: #ffffff;
+  --subtle: #f1f0ec;
+  --line: #e8e6e1;
+  --line-strong: #d6d3cc;
+  --ink: #1a1a19;
+  --ink-soft: #3a3a37;
+  --muted: #74726d;
+  --faint: #a9a7a1;
+  --on-ink: #ffffff;
+
+  --ok: #4f8a5f;
+  --ok-ink: #2f6040;
+  --ok-soft: #edf3ec;
+  --warn: #c98a1b;
+  --warn-ink: #8a5c00;
+  --warn-soft: #fbf3db;
+  --bad: #c4534f;
+  --bad-ink: #9f2f2d;
+  --bad-soft: #fdebec;
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: #111110;
+  --surface: #191918;
+  --subtle: #222220;
+  --line: #2a2a28;
+  --line-strong: #3a3a37;
+  --ink: #edece8;
+  --ink-soft: #cfcdc7;
+  --muted: #9b9994;
+  --faint: #66645f;
+  --on-ink: #111110;
+
+  --ok: #6aa878;
+  --ok-ink: #9fd0aa;
+  --ok-soft: rgba(106, 168, 120, 0.12);
+  --warn: #d9a13c;
+  --warn-ink: #f0c877;
+  --warn-soft: rgba(217, 161, 60, 0.12);
+  --bad: #d86b66;
+  --bad-ink: #f3a19c;
+  --bad-soft: rgba(216, 107, 102, 0.13);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', monospace;
+  --font-serif: 'Instrument Serif', 'Newsreader', Georgia, serif;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-on-ink: var(--on-ink);
+  --color-ok: var(--ok);
+  --color-ok-ink: var(--ok-ink);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-ink: var(--warn-ink);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-ink: var(--bad-ink);
+  --color-bad-soft: var(--bad-soft);
+
+  --animate-rise: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+  }
+}
+
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
-    @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
-    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    @apply bg-canvas font-sans text-ink antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    @apply bg-ink text-on-ink;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
   }
 }
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+    @apply rounded-xl border border-line bg-surface p-5 sm:p-6;
+  }
+  .page-title {
+    @apply font-serif text-[2.5rem] leading-[1.05] tracking-[-0.02em] text-ink sm:text-5xl;
+  }
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-[0.08em] text-muted;
+  }
+  .amount {
+    @apply font-sans tabular-nums tracking-tight;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:ring-offset-slate-950;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-[background-color,border-color,color,transform] duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/40 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:pointer-events-none disabled:opacity-45;
   }
   .btn-primary {
-    @apply bg-indigo-600 text-white hover:bg-indigo-700;
+    @apply bg-ink text-on-ink hover:bg-ink-soft;
   }
   .btn-secondary {
-    @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800;
+    @apply border border-line bg-surface text-ink hover:border-line-strong hover:bg-subtle;
   }
   .btn-danger {
-    @apply bg-red-600 text-white hover:bg-red-700;
+    @apply bg-bad text-white hover:opacity-90;
   }
   .btn-ghost {
-    @apply text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800;
+    @apply text-muted hover:bg-subtle hover:text-ink;
+  }
+  .link {
+    @apply font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-ink;
   }
   .input {
-    @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500;
+    @apply block w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder-faint transition-colors hover:border-line-strong focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10;
   }
   .input-error {
-    @apply border-red-500 focus:border-red-500 focus:ring-red-500/30;
+    @apply border-bad hover:border-bad focus:border-bad focus:ring-bad/15;
   }
   .label {
-    @apply mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300;
+    @apply mb-1.5 block text-sm font-medium text-ink-soft;
   }
   .field-error {
-    @apply mt-1 text-sm text-red-600 dark:text-red-400;
+    @apply mt-1.5 text-sm text-bad-ink;
   }
   .muted {
-    @apply text-slate-500 dark:text-slate-400;
+    @apply text-muted;
+  }
+  .skeleton {
+    @apply animate-shimmer rounded-md bg-subtle;
+  }
+  .rise {
+    animation: var(--animate-rise);
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
   }
 }

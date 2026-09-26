@@ -7,10 +7,10 @@ export async function fetchBudgetStatus(month) {
 }
 
 export const LEVEL_STYLES = {
-  ok: { bar: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', label: 'On track' },
-  warning: { bar: 'bg-amber-500', text: 'text-amber-600 dark:text-amber-400', label: 'Close to limit' },
-  over: { bar: 'bg-red-500', text: 'text-red-600 dark:text-red-400', label: 'Over budget' },
-  none: { bar: 'bg-slate-400', text: 'text-slate-500 dark:text-slate-400', label: 'No limit' },
+  ok: { bar: 'bg-ok', text: 'text-ok-ink', badge: 'bg-ok-soft text-ok-ink', label: 'On track' },
+  warning: { bar: 'bg-warn', text: 'text-warn-ink', badge: 'bg-warn-soft text-warn-ink', label: 'Close to limit' },
+  over: { bar: 'bg-bad', text: 'text-bad-ink', badge: 'bg-bad-soft text-bad-ink', label: 'Over budget' },
+  none: { bar: 'bg-faint', text: 'text-muted', badge: 'bg-subtle text-muted', label: 'No limit' },
 };
 
 /** Alert lines built from the status numbers, formatted in rupees. */

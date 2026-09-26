@@ -42,9 +42,9 @@ export default function Login() {
 
   return (
     <AuthShell title="Welcome back" subtitle="Log in to keep your spending on track"
-      footer={<>New here? <Link to="/signup" className="font-semibold text-indigo-600 hover:underline dark:text-indigo-400">Create an account</Link></>}>
+      footer={<>New here? <Link to="/signup" className="link">Create an account</Link></>}>
       <form onSubmit={submit} className="space-y-4" noValidate>
-        {error && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/60 dark:text-red-200">{error}</p>}
+        {error && <p role="alert" className="rounded-md border border-bad/20 bg-bad-soft px-3 py-2.5 text-sm text-bad-ink">{error}</p>}
         <div>
           <label htmlFor="username" className="label">Username</label>
           <input id="username" name="username" autoComplete="username" className="input" value={form.username} onChange={onChange} autoFocus />
@@ -55,19 +55,19 @@ export default function Login() {
             <input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password"
               className="input pr-16" value={form.password} onChange={onChange} />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 px-3 text-xs font-medium muted hover:text-slate-900 dark:hover:text-white">
+              className="absolute inset-y-0 right-0 px-3 text-xs font-medium text-muted hover:text-ink">
               {showPassword ? 'Hide' : 'Show'}
             </button>
           </div>
         </div>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="h-4 w-4 rounded accent-indigo-600" />
+        <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-soft">
+          <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="h-4 w-4 accent-[var(--ink)]" />
           Keep me logged in on this device
         </label>
-        <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
+        <button type="submit" className="btn btn-primary h-11 w-full" disabled={submitting}>
           {submitting ? <><InlineSpinner /> Logging in…</> : 'Log in'}
         </button>
-        <p className="text-center text-xs muted">The server may take up to a minute to wake up on the first visit.</p>
+        <p className="text-center text-xs text-faint">The server may take up to a minute to wake up on the first visit.</p>
       </form>
     </AuthShell>
   );

@@ -65,9 +65,9 @@ export default function SignUp() {
 
   return (
     <AuthShell title="Create your account" subtitle="Track spending and get warned before you overspend"
-      footer={<>Already have an account? <Link to="/login" className="font-semibold text-indigo-600 hover:underline dark:text-indigo-400">Log in</Link></>}>
+      footer={<>Already have an account? <Link to="/login" className="link">Log in</Link></>}>
       <form onSubmit={submit} className="space-y-4" noValidate>
-        {error && <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/60 dark:text-red-200">{error}</p>}
+        {error && <p role="alert" className="rounded-md border border-bad/20 bg-bad-soft px-3 py-2.5 text-sm text-bad-ink">{error}</p>}
         {field('username', 'Username (you log in with this)', { autoComplete: 'username', autoFocus: true })}
         {field('fullName', 'Full name (optional)', { autoComplete: 'name' })}
         <div className="grid gap-4 sm:grid-cols-2">
@@ -76,7 +76,7 @@ export default function SignUp() {
         </div>
         {field('password', 'Password', { type: 'password', autoComplete: 'new-password' })}
         {field('confirm', 'Confirm password', { type: 'password', autoComplete: 'new-password' })}
-        <button type="submit" className="btn btn-primary w-full" disabled={submitting}>
+        <button type="submit" className="btn btn-primary h-11 w-full" disabled={submitting}>
           {submitting ? <><InlineSpinner /> Creating account…</> : 'Create account'}
         </button>
       </form>

@@ -1,3 +1,4 @@
+import { ArrowLeft } from '../lib/icons';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { fetchBudgetStatus, newAlerts } from '../lib/budget';
 import { CATEGORIES, expenseCategory, expenseNote } from '../lib/categories';
 import { toApiDateTime, today } from '../lib/format';
 import { useToast } from '../components/Toast';
+import CategoryIcon from '../components/CategoryIcon';
 import Spinner, { InlineSpinner } from '../components/Spinner';
 
 const empty = { title: '', amount: '', category: '', date: today(), note: '' };
@@ -96,14 +98,20 @@ export default function ExpenseForm() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <Link to={isEdit ? `/expenses/${id}` : '/expenses'} className="text-sm muted hover:underline">← Back</Link>
-      <h1 className="mt-2 text-2xl font-bold">{isEdit ? 'Edit expense' : 'Add expense'}</h1>
+      <Link to={isEdit ? `/expenses/${id}` : '/expenses'} className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
+        <ArrowLeft size={14} /> Back
+      </Link>
+      <h1 className="page-title rise mt-3">{isEdit ? 'Edit expense' : 'Add expense'}</h1>
 
-      <form onSubmit={submit} noValidate className="card mt-4 space-y-5">
+      <form onSubmit={submit} noValidate className="card rise mt-6 space-y-6" style={{ '--i': 1 }}>
         <div>
-          <label htmlFor="amount" className="label">Amount (₹)</label>
-          <input id="amount" type="number" inputMode="decimal" step="0.01" min="0" placeholder="0.00" autoFocus={!isEdit}
-            className={`input text-2xl font-semibold ${errors.amount ? 'input-error' : ''}`} value={form.amount} onChange={(e) => set('amount', e.target.value)} />
+          <label htmlFor="amount" className="label">Amount</label>
+          <div className={`flex items-baseline gap-2 border-b-2 pb-2 transition-colors focus-within:border-ink ${errors.amount ? 'border-bad' : 'border-line'}`}>
+            <span className="text-3xl font-medium text-faint">₹</span>
+            <input id="amount" type="number" inputMode="decimal" step="0.01" min="0" placeholder="0" autoFocus={!isEdit}
+              className="amount w-full bg-transparent text-4xl font-semibold outline-none placeholder:text-line-strong"
+              value={form.amount} onChange={(e) => set('amount', e.target.value)} aria-invalid={Boolean(errors.amount)} />
+          </div>
           {errors.amount && <p className="field-error">{errors.amount}</p>}
         </div>
 
@@ -117,14 +125,17 @@ export default function ExpenseForm() {
         <fieldset>
           <legend className="label">Category</legend>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-            {CATEGORIES.map((c) => (
-              <button type="button" key={c.name} onClick={() => set('category', c.name)} aria-pressed={form.category === c.name}
-                className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-xs font-medium transition-colors ${form.category === c.name
-                  ? 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-200'
-                  : 'border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800'}`}>
-                <span className="text-lg">{c.icon}</span>{c.label || c.name}
-              </button>
-            ))}
+            {CATEGORIES.map((c) => {
+              const on = form.category === c.name;
+              return (
+                <button type="button" key={c.name} onClick={() => set('category', c.name)} aria-pressed={on}
+                  className={`flex flex-col items-center gap-1.5 rounded-lg border px-1.5 py-3 text-center text-xs font-medium leading-tight transition-[background-color,border-color,transform] duration-200 active:scale-[0.97] ${on
+                    ? 'border-ink bg-subtle text-ink'
+                    : 'border-line text-ink-soft hover:border-line-strong hover:bg-subtle'}`}>
+                  <CategoryIcon name={c.name} size="sm" />{c.label || c.name}
+                </button>
+              );
+            })}
           </div>
           {errors.category && <p className="field-error">{errors.category}</p>}
         </fieldset>
@@ -136,23 +147,23 @@ export default function ExpenseForm() {
             {errors.date && <p className="field-error">{errors.date}</p>}
           </div>
           <div>
-            <label htmlFor="note" className="label">Note (optional)</label>
+            <label htmlFor="note" className="label">Note <span className="font-normal text-faint">(optional)</span></label>
             <input id="note" maxLength={500} placeholder="Anything to remember" className="input" value={form.note} onChange={(e) => set('note', e.target.value)} />
           </div>
         </div>
 
         {!isEdit && (
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" className="h-4 w-4 accent-indigo-600" checked={addAnother} onChange={(e) => setAddAnother(e.target.checked)} />
+          <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-soft">
+            <input type="checkbox" className="h-4 w-4 accent-[var(--ink)]" checked={addAnother} onChange={(e) => setAddAnother(e.target.checked)} />
             Add another after saving
           </label>
         )}
 
-        <div className="flex gap-3">
-          <button type="submit" className="btn btn-primary flex-1" disabled={saving}>
+        <div className="flex gap-3 border-t border-line pt-5">
+          <button type="submit" className="btn btn-primary h-11 flex-1" disabled={saving}>
             {saving ? <><InlineSpinner /> Saving…</> : isEdit ? 'Save changes' : 'Add expense'}
           </button>
-          <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
+          <button type="button" className="btn btn-secondary h-11" onClick={() => navigate(-1)}>Cancel</button>
         </div>
       </form>
     </div>

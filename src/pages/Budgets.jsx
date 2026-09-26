@@ -3,8 +3,11 @@ import { useSearchParams } from 'react-router-dom';
 import { api, errorMessage } from '../lib/api';
 import { fetchBudgetStatus } from '../lib/budget';
 import { CATEGORIES, categoryInfo } from '../lib/categories';
+import { Info } from '../lib/icons';
 import { currentMonth, money } from '../lib/format';
 import { useToast } from '../components/Toast';
+import CategoryIcon from '../components/CategoryIcon';
+import PageHeader from '../components/PageHeader';
 import ProgressBar from '../components/ProgressBar';
 import Spinner, { InlineSpinner } from '../components/Spinner';
 
@@ -76,7 +79,7 @@ export default function Budgets() {
   };
 
   if (loading) return <Spinner />;
-  if (error) return <p className="card text-center text-red-600 dark:text-red-400">{error}</p>;
+  if (error) return <p className="card text-center text-bad-ink">{error}</p>;
 
   const row = (name) => {
     const info = categoryInfo(name);
@@ -84,23 +87,25 @@ export default function Budgets() {
     const limit = num(limits[name]);
     const isFixed = fixed.includes(name);
     return (
-      <li key={name} className="rounded-xl border border-slate-200 p-3 dark:border-slate-800">
+      <li key={name} className="py-4 first:pt-1 last:pb-1">
         <div className="flex items-center gap-3">
-          <span className="text-xl">{info.icon}</span>
-          <label htmlFor={`lim-${name}`} className="min-w-0 flex-1 truncate text-sm font-medium">{info.label}</label>
-          <input id={`lim-${name}`} type="number" min="0" step="100" inputMode="decimal" placeholder="No limit" className="input w-28 text-right"
-            value={limits[name] ?? ''} onChange={(e) => setLimits({ ...limits, [name]: e.target.value })} />
+          <CategoryIcon name={name} size="sm" />
+          <div className="min-w-0 flex-1">
+            <label htmlFor={`lim-${name}`} className="block truncate text-sm font-medium">{info.label}</label>
+            <p className="text-xs text-muted">{spent > 0 || limit > 0 ? `Spent ${money(spent)} this month` : 'Nothing spent yet'}</p>
+          </div>
+          <MoneyInput id={`lim-${name}`} step="100" placeholder="No limit" className="w-32"
+            value={limits[name] ?? ''} onChange={(v) => setLimits({ ...limits, [name]: v })} />
         </div>
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <label className="flex items-center gap-1.5 text-xs muted">
-            <input type="checkbox" className="h-3.5 w-3.5 accent-indigo-600" checked={isFixed} onChange={() => toggleFixed(name)} />
-            Fixed monthly payment
+        <div className="mt-2 flex items-center gap-3 pl-10">
+          {limit > 0 && spent > 0 && (
+            <ProgressBar thin className="flex-1" percent={spent / limit * 100} level={spent > limit ? 'over' : !isFixed && spent >= limit * threshold / 100 ? 'warning' : 'ok'} />
+          )}
+          <label className="ml-auto flex shrink-0 cursor-pointer items-center gap-1.5 text-xs text-muted">
+            <input type="checkbox" className="h-3.5 w-3.5 accent-[var(--ink)]" checked={isFixed} onChange={() => toggleFixed(name)} />
+            Fixed payment
           </label>
-          {(spent > 0 || limit > 0) && <span className="text-xs muted">Spent {money(spent)}</span>}
         </div>
-        {limit > 0 && spent > 0 && (
-          <ProgressBar className="mt-2" percent={spent / limit * 100} level={spent > limit ? 'over' : !isFixed && spent >= limit * threshold / 100 ? 'warning' : 'ok'} />
-        )}
       </li>
     );
   };
@@ -109,69 +114,90 @@ export default function Budgets() {
   const flexNames = names.filter((n) => !fixed.includes(n));
 
   return (
-    <form onSubmit={save} className="mx-auto max-w-3xl space-y-5">
-      <div>
-        <h1 className="text-2xl font-bold">Budgets</h1>
-        <p className="text-sm muted">Set monthly limits. You get a warning at the alert level and a red alert when you go over.</p>
-      </div>
+    <form onSubmit={save} className="mx-auto max-w-3xl space-y-6 sm:space-y-8">
+      <PageHeader title="Budgets" subtitle="Set monthly limits. You get a warning at the alert level and a red alert when you go over." />
 
       {params.get('welcome') && (
-        <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm dark:border-indigo-900 dark:bg-indigo-500/10">
-          Welcome! Enter your salary, savings and category limits, then press <b>Save budget</b>.
+        <div className="rise flex gap-3 rounded-xl border border-line bg-surface p-4 text-sm">
+          <Info size={20} className="shrink-0 text-muted" />
+          <p>Welcome. Enter your salary, savings and category limits, then press <b>Save budget</b>.</p>
         </div>
       )}
 
-      <section className="card grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="income" className="label">Monthly take-home salary (₹)</label>
-          <input id="income" type="number" min="0" step="1000" inputMode="decimal" placeholder="e.g. 50000" className="input"
-            value={income} onChange={(e) => setIncome(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="savings" className="label">Savings each month (₹)</label>
-          <input id="savings" type="number" min="0" step="500" inputMode="decimal" placeholder="e.g. 10000" className="input"
-            value={savings} onChange={(e) => setSavings(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="monthly" className="label">Overall monthly spending limit (₹)</label>
-          <input id="monthly" type="number" min="0" step="100" inputMode="decimal" placeholder="Salary minus savings" className="input"
-            value={monthly} onChange={(e) => setMonthly(e.target.value)} />
-          {num(income) > 0 && num(savings) > 0 && num(monthly) !== num(income) - num(savings) && (
-            <button type="button" className="mt-1 text-xs text-indigo-600 hover:underline dark:text-indigo-400"
-              onClick={() => setMonthly(String(num(income) - num(savings)))}>Use salary minus savings ({money(num(income) - num(savings))})</button>
-          )}
-        </div>
-        <div>
-          <label htmlFor="threshold" className="label">Warn me at {threshold}% of a limit</label>
-          <input id="threshold" type="range" min="50" max="100" step="5" className="mt-3 w-full accent-indigo-600"
-            value={threshold} onChange={(e) => setThreshold(e.target.value)} />
+      <section className="card rise" style={{ '--i': 1 }}>
+        <h2 className="text-base font-semibold tracking-tight">Your month</h2>
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="income" className="label">Monthly take-home salary</label>
+            <MoneyInput id="income" step="1000" placeholder="e.g. 50000" value={income} onChange={setIncome} />
+          </div>
+          <div>
+            <label htmlFor="savings" className="label">Savings each month</label>
+            <MoneyInput id="savings" step="500" placeholder="e.g. 10000" value={savings} onChange={setSavings} />
+          </div>
+          <div>
+            <label htmlFor="monthly" className="label">Overall monthly spending limit</label>
+            <MoneyInput id="monthly" step="100" placeholder="Salary minus savings" value={monthly} onChange={setMonthly} />
+            {num(income) > 0 && num(savings) > 0 && num(monthly) !== num(income) - num(savings) && (
+              <button type="button" className="link mt-2 text-xs"
+                onClick={() => setMonthly(String(num(income) - num(savings)))}>Use salary minus savings ({money(num(income) - num(savings))})</button>
+            )}
+          </div>
+          <div>
+            <label htmlFor="threshold" className="label flex justify-between">Warn me at <span className="amount text-ink">{threshold}%</span></label>
+            <input id="threshold" type="range" min="50" max="100" step="5" className="mt-3 w-full accent-[var(--ink)]"
+              value={threshold} onChange={(e) => setThreshold(e.target.value)} />
+            <p className="mt-1 text-xs text-muted">of any limit</p>
+          </div>
         </div>
 
         {num(income) > 0 && (
-          <div className="grid grid-cols-2 gap-3 rounded-xl bg-slate-50 p-4 text-sm sm:col-span-2 sm:grid-cols-4 dark:bg-slate-800/60">
-            <div><p className="muted">Fixed</p><p className="font-semibold tabular-nums">{money(fixedTotal)}</p></div>
-            <div><p className="muted">Day-to-day</p><p className="font-semibold tabular-nums">{money(spendableTotal)}</p><p className="text-xs muted">≈ {money(spendableTotal * 7 / 30)} a week</p></div>
-            <div><p className="muted">Savings</p><p className="font-semibold tabular-nums">{money(num(savings))}</p></div>
-            <div><p className="muted">Unplanned</p><p className={`font-semibold tabular-nums ${leftOver < 0 ? 'text-red-600 dark:text-red-400' : ''}`}>{money(leftOver)}</p></div>
-          </div>
+          <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
+            <Split label="Fixed" value={money(fixedTotal)} />
+            <Split label="Day-to-day" value={money(spendableTotal)} sub={`≈ ${money(spendableTotal * 7 / 30)} a week`} />
+            <Split label="Savings" value={money(num(savings))} />
+            <Split label="Unplanned" value={money(leftOver)} bad={leftOver < 0} />
+          </dl>
         )}
       </section>
 
-      <section className="card">
-        <h2 className="font-semibold">Day-to-day spending</h2>
-        <p className="mb-4 text-sm muted">These limits add up to {money(spendableTotal)}. The dashboard tracks them week by week.</p>
-        <ul className="grid gap-3 sm:grid-cols-2">{flexNames.map(row)}</ul>
+      <section className="card rise" style={{ '--i': 2 }}>
+        <h2 className="text-base font-semibold tracking-tight">Day-to-day spending</h2>
+        <p className="mt-1 text-sm text-muted">These limits add up to {money(spendableTotal)}. The dashboard tracks them week by week.</p>
+        <ul className="mt-4 divide-y divide-line">{flexNames.map(row)}</ul>
       </section>
 
-      <section className="card">
-        <h2 className="font-semibold">Fixed monthly payments</h2>
-        <p className="mb-4 text-sm muted">{fixedNames.length ? `EMI, rent and other payments that go out every month: ${money(fixedTotal)}.` : 'Tick "Fixed monthly payment" on a category to move it here.'}</p>
-        {fixedNames.length > 0 && <ul className="grid gap-3 sm:grid-cols-2">{fixedNames.map(row)}</ul>}
+      <section className="card rise" style={{ '--i': 3 }}>
+        <h2 className="text-base font-semibold tracking-tight">Fixed monthly payments</h2>
+        <p className="mt-1 text-sm text-muted">{fixedNames.length ? `EMI, rent and other payments that go out every month: ${money(fixedTotal)}.` : 'Tick "Fixed payment" on a category to move it here.'}</p>
+        {fixedNames.length > 0 && <ul className="mt-4 divide-y divide-line">{fixedNames.map(row)}</ul>}
       </section>
 
-      <div className="sticky bottom-20 flex justify-end md:bottom-4">
-        <button type="submit" className="btn btn-primary shadow-lg" disabled={saving}>{saving ? <><InlineSpinner /> Saving…</> : 'Save budget'}</button>
+      <div className="sticky bottom-24 z-30 flex justify-end md:bottom-6">
+        <button type="submit" className="btn btn-primary h-11 px-6 shadow-[0_10px_30px_rgba(26,26,25,0.18)]" disabled={saving}>
+          {saving ? <><InlineSpinner /> Saving…</> : 'Save budget'}
+        </button>
       </div>
     </form>
+  );
+}
+
+function MoneyInput({ id, value, onChange, className = '', ...props }) {
+  return (
+    <div className={`relative ${className}`}>
+      <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-faint">₹</span>
+      <input id={id} type="number" min="0" inputMode="decimal" className="input amount pl-7 text-right sm:text-left"
+        value={value} onChange={(e) => onChange(e.target.value)} {...props} />
+    </div>
+  );
+}
+
+function Split({ label, value, sub, bad }) {
+  return (
+    <div className="bg-surface p-4">
+      <dt className="text-xs text-muted">{label}</dt>
+      <dd className={`amount mt-1 font-semibold ${bad ? 'text-bad-ink' : ''}`}>{value}</dd>
+      {sub && <dd className="mt-0.5 text-xs text-muted">{sub}</dd>}
+    </div>
   );
 }
