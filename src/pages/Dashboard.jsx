@@ -6,6 +6,7 @@ import { fetchBudgetStatus, LEVEL_STYLES } from '../lib/budget';
 import { categoryInfo } from '../lib/categories';
 import { currentMonth, money, monthLabel, monthRange } from '../lib/format';
 import BudgetAlerts from '../components/BudgetAlerts';
+import DueSoon from '../components/DueSoon';
 import CategoryIcon from '../components/CategoryIcon';
 import ExpenseRow from '../components/ExpenseRow';
 import { useSyncedVersion } from '../lib/useOffline';
@@ -48,6 +49,8 @@ export default function Dashboard() {
       <PageHeader title="Dashboard" subtitle="Where your money went this month, against your limits.">
         <MonthPicker month={month} onChange={setMonth} />
       </PageHeader>
+
+      {isCurrent && <DueSoon />}
 
       {loading ? <DashboardSkeleton /> : error ? (
         <div className="card flex flex-col items-center gap-4 py-12 text-center">

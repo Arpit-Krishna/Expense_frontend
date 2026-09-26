@@ -5,6 +5,7 @@ import RequireAuth from './components/RequireAuth';
 import { ToastProvider } from './components/Toast';
 import Budgets from './pages/Budgets';
 import Dashboard from './pages/Dashboard';
+import EmailAlerts from './pages/EmailAlerts';
 import ExpenseDetail from './pages/ExpenseDetail';
 import ExpenseForm from './pages/ExpenseForm';
 import Expenses from './pages/Expenses';
@@ -12,6 +13,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
 import QuickAdd from './pages/QuickAdd';
+import Recurring from './pages/Recurring';
 import SignUp from './pages/SignUp';
 import Spinner from './components/Spinner';
 
@@ -37,6 +39,8 @@ export default function App() {
             <Route path="/insights" element={<Suspense fallback={<Spinner />}><Insights /></Suspense>} />
             <Route path="/export" element={<Suspense fallback={<Spinner />}><Export /></Suspense>} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/recurring" element={<Recurring />} />
+            <Route path="/email-alerts" element={<EmailAlerts />} />
             {/* Old links */}
             <Route path="/create-expense" element={<Navigate to="/expenses/new" replace />} />
             <Route path="/expense/:id" element={<LegacyExpense />} />

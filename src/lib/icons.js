@@ -50,3 +50,8 @@ export { CloudSlash } from '@phosphor-icons/react/dist/csr/CloudSlash';
 export { CloudArrowUp } from '@phosphor-icons/react/dist/csr/CloudArrowUp';
 export { DeviceMobile } from '@phosphor-icons/react/dist/csr/DeviceMobile';
 export { PencilSimpleLine } from '@phosphor-icons/react/dist/csr/PencilSimpleLine';
+export { CalendarCheck } from '@phosphor-icons/react/dist/csr/CalendarCheck';
+export { EnvelopeSimple } from '@phosphor-icons/react/dist/csr/EnvelopeSimple';
+export { PaperPlaneTilt } from '@phosphor-icons/react/dist/csr/PaperPlaneTilt';
+export { Pause } from '@phosphor-icons/react/dist/csr/Pause';
+export { Play } from '@phosphor-icons/react/dist/csr/Play';

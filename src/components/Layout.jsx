@@ -1,5 +1,5 @@
 import {
-  ChartBar, DeviceMobile, DownloadSimple, House, Monitor, Moon, Plus, Receipt, SignOut, Sun, Target, UserCircle,
+  ArrowsClockwise, ChartBar, DeviceMobile, DownloadSimple, EnvelopeSimple, House, Monitor, Moon, Plus, Receipt, SignOut, Sun, Target, UserCircle,
 } from '../lib/icons';
 import { canPromptInstall, isIos, isStandalone, onInstallChange, promptInstall } from '../lib/install';
 import SyncStatus from './SyncStatus';
@@ -101,6 +101,12 @@ function AccountMenu({ theme, setTheme, onLogout }) {
         <div role="menu" className="rise absolute right-0 z-50 mt-2 w-60 rounded-lg border border-line bg-surface p-1.5 shadow-[0_12px_40px_rgba(26,26,25,0.10)]">
           <Link to="/profile" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle">
             <UserCircle size={17} className="text-muted" /> Profile
+          </Link>
+          <Link to="/recurring" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle">
+            <ArrowsClockwise size={17} className="text-muted" /> Recurring payments
+          </Link>
+          <Link to="/email-alerts" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle">
+            <EnvelopeSimple size={17} className="text-muted" /> Email alerts
           </Link>
           <Link to="/export" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle md:hidden">
             <DownloadSimple size={17} className="text-muted" /> Export
