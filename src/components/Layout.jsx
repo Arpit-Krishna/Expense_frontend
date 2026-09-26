@@ -7,6 +7,7 @@ import SyncStatus from './SyncStatus';
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { clearToken } from '../lib/api';
+import { Wordmark } from '../brand/GullakMark';
 
 const LINKS = [
   { to: '/', label: 'Dashboard', end: true },
@@ -168,9 +169,8 @@ export default function Layout() {
       <a href="#main" className="sr-only z-50 rounded-md bg-ink px-3 py-2 text-sm text-on-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-3">Skip to content</a>
       <header className="sticky top-0 z-40 border-b border-line bg-canvas/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
-          <NavLink to="/" className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
-            <img src="/favicon.svg" alt="" className="h-7 w-7 dark:invert" />
-            Expensify
+          <NavLink to="/" aria-label="Expensify home" className="rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/40">
+            <Wordmark />
           </NavLink>
           <nav className="ml-6 hidden items-center gap-0.5 md:flex" aria-label="Main">
             {LINKS.map((l) => <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>{l.label}</NavLink>)}

@@ -109,7 +109,7 @@ export default function QuickAdd() {
   return (
     <div className="mx-auto flex max-w-md flex-col">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="font-serif text-3xl tracking-[-0.02em]">Quick add</h1>
+        <h1 className="text-3xl font-semibold tracking-[-0.035em]">Quick add</h1>
         <Link to="/expenses/new" className="inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
           <PencilSimpleLine size={15} /> Full form
         </Link>

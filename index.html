@@ -27,8 +27,27 @@
         if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
       } catch (e) {}
     </script>
+    <style>
+      /* Boot splash: shown until the app mounts, then faded out from main.jsx. */
+      #splash { --sp-bg: #f7f6f3; --sp-ink: #1a1a19; --sp-clay: #c0643a; --sp-slot: #6e3219; position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--sp-bg); transition: opacity 280ms ease; }
+      .dark #splash { --sp-bg: #111110; --sp-ink: #edece8; --sp-clay: #d98159; --sp-slot: #7a3a1e; }
+      #splash.gone { opacity: 0; pointer-events: none; }
+      #splash .sp-box { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+      #splash svg { width: 76px; height: 76px; overflow: visible; }
+      #splash .sp-name { font: 400 30px/1 'Instrument Serif', Georgia, serif; letter-spacing: -0.01em; color: var(--sp-ink); }
+      #splash .sp-coin { animation: sp-drop 1.6s cubic-bezier(0.55, 0, 0.9, 0.75) infinite; }
+      @keyframes sp-drop {
+        0% { transform: translateY(-22px); opacity: 0; }
+        12% { opacity: 1; }
+        40% { transform: translateY(0); opacity: 1; }
+        58% { transform: translateY(22px); opacity: 1; }
+        59%, 100% { transform: translateY(22px); opacity: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) { #splash .sp-coin { animation: none; } #splash { transition: none; } }
+    </style>
   </head>
   <body>
+    <div id="splash" role="status" aria-label="Loading Expensify"><div class="sp-box"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle class="sp-coin" cx="32" cy="15" r="7.5" fill="var(--sp-ink)"/><circle class="sp-coin" cx="32" cy="15" r="4.6" fill="none" stroke="var(--sp-bg)" stroke-opacity="0.35" stroke-width="1.2"/><rect x="24.5" y="51" width="15" height="6" rx="2.5" fill="var(--sp-clay)"/><ellipse cx="32" cy="40" rx="19" ry="16" fill="var(--sp-clay)"/><rect x="21.5" y="21" width="21" height="8" rx="3" fill="var(--sp-clay)"/><path d="M18.5 38 C18.5 32 22 28.5 26.5 27" fill="none" stroke="#F7F6F3" stroke-opacity="0.35" stroke-width="2.2" stroke-linecap="round"/><rect x="23.5" y="20.2" width="17" height="2.8" rx="1.4" fill="var(--sp-slot)"/></svg><span class="sp-name">Expensify</span></div></div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

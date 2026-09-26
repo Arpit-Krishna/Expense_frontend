@@ -59,7 +59,7 @@ export default function ExpenseDetail() {
           <CategoryIcon name={name} />
           <p className="text-sm text-muted">{cat.label}</p>
         </div>
-        <h1 className="mt-5 break-words font-serif text-4xl leading-tight tracking-[-0.02em]">{expense.title}</h1>
+        <h1 className="mt-5 break-words text-4xl font-semibold leading-tight tracking-[-0.035em]">{expense.title}</h1>
         <p className="amount mt-2 text-4xl font-semibold">{money(expense.amount)}</p>
 
         <dl className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-line pt-6 text-sm">

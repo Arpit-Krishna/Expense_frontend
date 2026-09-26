@@ -10,6 +10,14 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
+// Fade out the boot splash from index.html once React has painted.
+requestAnimationFrame(() => {
+  const splash = document.getElementById('splash');
+  if (!splash) return;
+  splash.classList.add('gone');
+  setTimeout(() => { splash.remove(); }, 400);
+});
+
 // The service worker makes the app installable and lets it open offline.
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {

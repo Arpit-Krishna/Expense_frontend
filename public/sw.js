@@ -1,6 +1,6 @@
 // Expensify service worker: keeps the app shell available offline.
 // API calls are never cached; offline expenses are queued by the app itself.
-const VERSION = 'v2';
+const VERSION = 'v3';
 const SHELL = `expensify-shell-${VERSION}`;
 const ASSETS = `expensify-assets-${VERSION}`;
 const FONTS = `expensify-fonts-${VERSION}`;

@@ -22,11 +22,11 @@ export default function Profile() {
   return (
     <div className="mx-auto max-w-lg">
       <div className="rise flex items-center gap-4">
-        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-ink font-serif text-3xl text-on-ink">
+        <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-clay text-2xl font-semibold text-white">
           {name.slice(0, 1).toUpperCase()}
         </div>
         <div className="min-w-0">
-          <h1 className="truncate font-serif text-4xl leading-tight tracking-[-0.02em]">{name}</h1>
+          <h1 className="truncate text-4xl font-semibold leading-tight tracking-[-0.035em]">{name}</h1>
           <p className="text-sm text-muted">@{user.username}</p>
         </div>
       </div>

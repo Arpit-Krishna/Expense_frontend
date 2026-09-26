@@ -15,6 +15,10 @@
   --faint: #a9a7a1;
   --on-ink: #ffffff;
 
+  /* Brand clay: the gullak. Reserved for brand moments (logo, loader, splash), never for data. */
+  --clay: #c0643a;
+  --clay-deep: #6e3219;
+
   --ok: #4f8a5f;
   --ok-ink: #2f6040;
   --ok-soft: #edf3ec;
@@ -38,6 +42,9 @@
   --muted: #9b9994;
   --faint: #66645f;
   --on-ink: #111110;
+
+  --clay: #d98159;
+  --clay-deep: #7a3a1e;
 
   --ok: #6aa878;
   --ok-ink: #9fd0aa;
@@ -66,6 +73,8 @@
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-on-ink: var(--on-ink);
+  --color-clay: var(--clay);
+  --color-clay-deep: var(--clay-deep);
   --color-ok: var(--ok);
   --color-ok-ink: var(--ok-ink);
   --color-ok-soft: var(--ok-soft);
@@ -121,7 +130,7 @@
     @apply rounded-xl border border-line bg-surface p-5 sm:p-6;
   }
   .page-title {
-    @apply font-serif text-[2.5rem] leading-[1.05] tracking-[-0.02em] text-ink sm:text-5xl;
+    @apply font-sans text-[2rem] font-semibold leading-[1.1] tracking-[-0.035em] text-ink sm:text-[2.5rem];
   }
   .eyebrow {
     @apply text-[11px] font-medium uppercase tracking-[0.08em] text-muted;
@@ -164,6 +173,10 @@
   }
   .skeleton {
     @apply animate-shimmer rounded-md bg-subtle;
+  }
+  /* Loaders wait a beat before showing, so fast loads never flash. */
+  .loader-in {
+    animation: rise 400ms cubic-bezier(0.16, 1, 0.3, 1) 180ms both;
   }
   .rise {
     animation: var(--animate-rise);
