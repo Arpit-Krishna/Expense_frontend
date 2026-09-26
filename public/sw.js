@@ -1,6 +1,6 @@
 // Expensify service worker: keeps the app shell available offline.
 // API calls are never cached; offline expenses are queued by the app itself.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const SHELL = `expensify-shell-${VERSION}`;
 const ASSETS = `expensify-assets-${VERSION}`;
 const FONTS = `expensify-fonts-${VERSION}`;
@@ -62,6 +62,8 @@ async function cacheFirst(req, cacheName) {
   const hit = await cache.match(req);
   if (hit) return hit;
   const res = await fetch(req);
-  if (res.ok || res.type === 'opaque') cache.put(req, res.clone());
+  // Never store an HTML fallback page under a script or image address.
+  const html = (res.headers.get('content-type') || '').includes('text/html');
+  if ((res.ok && !html) || res.type === 'opaque') cache.put(req, res.clone());
   return res;
 }

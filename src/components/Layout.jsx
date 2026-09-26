@@ -2,6 +2,7 @@ import {
   ArrowsClockwise, ChartBar, DeviceMobile, DownloadSimple, EnvelopeSimple, House, Monitor, Moon, Plus, Receipt, SignOut, Sun, Target, UserCircle,
 } from '../lib/icons';
 import { canPromptInstall, isIos, isStandalone, onInstallChange, promptInstall } from '../lib/install';
+import ErrorBoundary from './ErrorBoundary';
 import SyncStatus from './SyncStatus';
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -181,7 +182,9 @@ export default function Layout() {
       </header>
 
       <main id="main" className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
-        <Outlet />
+        <ErrorBoundary key={pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
 
       {/* Mobile bottom navigation */}
