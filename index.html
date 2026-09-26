@@ -2,9 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png+xml" href="/vite.png" />
+    <link rel="icon" type="image/png" href="/vite.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expencify</title>
+    <meta name="description" content="Track your expenses and get warned before you overspend your budget." />
+    <meta name="theme-color" content="#4f46e5" />
+    <title>Expensify · Expense tracker</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

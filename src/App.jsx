@@ -1,28 +1,53 @@
-import Signup from './pages/auth/SignUp'
-import Login from './pages/auth/Login'
-import Home from './pages/norm/Home'
-import ExpenseForm from './pages/norm/ExpenseForm'
-import ExpenseDetail from './pages/norm/ExpenseDetail'
-import ExportPreview from './pages/norm/ExportPreview'
-import Me from './pages/auth/Me'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
+import Layout from './components/Layout';
+import RequireAuth from './components/RequireAuth';
+import { ToastProvider } from './components/Toast';
+import Budgets from './pages/Budgets';
+import Dashboard from './pages/Dashboard';
+import ExpenseDetail from './pages/ExpenseDetail';
+import ExpenseForm from './pages/ExpenseForm';
+import Expenses from './pages/Expenses';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
+import SignUp from './pages/SignUp';
+import Spinner from './components/Spinner';
 
-function App() {
+// Charts and PDF export are heavy, so load them only when opened.
+const Insights = lazy(() => import('./pages/Insights'));
+const Export = lazy(() => import('./pages/Export'));
+
+export default function App() {
   return (
-    <div>
-      <Router>
+    <ToastProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create-expense" element={<ExpenseForm />} />
-          <Route path="/expense/:id" element={<ExpenseDetail />} />
-          <Route path="/export" element={<ExportPreview />} />
-          <Route path="/about-me" element={<Me />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route element={<RequireAuth><Layout /></RequireAuth>}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/expenses" element={<Expenses />} />
+            <Route path="/expenses/new" element={<ExpenseForm />} />
+            <Route path="/expenses/:id" element={<ExpenseDetail />} />
+            <Route path="/expenses/:id/edit" element={<ExpenseForm />} />
+            <Route path="/budgets" element={<Budgets />} />
+            <Route path="/insights" element={<Suspense fallback={<Spinner />}><Insights /></Suspense>} />
+            <Route path="/export" element={<Suspense fallback={<Spinner />}><Export /></Suspense>} />
+            <Route path="/profile" element={<Profile />} />
+            {/* Old links */}
+            <Route path="/create-expense" element={<Navigate to="/expenses/new" replace />} />
+            <Route path="/expense/:id" element={<LegacyExpense />} />
+            <Route path="/about-me" element={<Navigate to="/profile" replace />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
-      </Router>
-    </div>
-  )
+      </BrowserRouter>
+    </ToastProvider>
+  );
 }
 
-export default App
+function LegacyExpense() {
+  const { id } = useParams();
+  return <Navigate to={`/expenses/${id}`} replace />;
+}
