@@ -79,7 +79,9 @@ function AccountMenu({ theme, setTheme, onLogout }) {
   const ref = useRef(null);
   const location = useLocation();
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -151,7 +153,9 @@ export default function Layout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const [theme, setTheme] = useTheme();
 
   const logout = () => {
