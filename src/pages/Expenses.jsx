@@ -6,7 +6,9 @@ import { api, errorMessage } from '../lib/api';
 import { CATEGORIES } from '../lib/categories';
 import { money, monthRange } from '../lib/format';
 import ExpenseRow from '../components/ExpenseRow';
+import { useSyncedVersion } from '../lib/useOffline';
 import PageHeader from '../components/PageHeader';
+import PendingList from '../components/PendingList';
 import { ListSkeleton } from '../components/Spinner';
 
 const PAGE_SIZE = 15;
@@ -43,6 +45,7 @@ export default function Expenses() {
     return () => clearTimeout(t);
   });
 
+  const synced = useSyncedVersion();
   const key = JSON.stringify(filters);
   useEffect(() => {
     let cancelled = false;
@@ -60,7 +63,7 @@ export default function Expenses() {
       .catch((err) => !cancelled && setError(errorMessage(err)))
       .finally(() => !cancelled && setLoading(false));
     return () => { cancelled = true; };
-  }, [key]);
+  }, [key, synced]);
 
   const filtered = filters.q || filters.category || filters.from || filters.to;
   const byDate = filters.sort.startsWith('date');
@@ -72,6 +75,8 @@ export default function Expenses() {
         subtitle={data ? `${data.totalItems} expense${data.totalItems === 1 ? '' : 's'} · ${money(data.totalAmount)} in total` : 'Everything you have logged.'}>
         <Link to="/expenses/new" className="btn btn-primary"><Plus size={15} weight="bold" /> Add expense</Link>
       </PageHeader>
+
+      <PendingList />
 
       <div className="rise grid gap-3 rounded-xl border border-line bg-surface p-3 sm:grid-cols-2 lg:grid-cols-12" style={{ '--i': 1 }}>
         <div className="relative sm:col-span-2 lg:col-span-5">

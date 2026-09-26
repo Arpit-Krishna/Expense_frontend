@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, errorMessage, fieldErrors } from '../lib/api';
 import { fetchBudgetStatus, newAlerts } from '../lib/budget';
+import { createExpense } from '../lib/offline';
 import { CATEGORIES, expenseCategory, expenseNote } from '../lib/categories';
 import { toApiDateTime, today } from '../lib/format';
 import { useToast } from '../components/Toast';
@@ -77,14 +78,26 @@ export default function ExpenseForm() {
     };
     try {
       const before = await fetchBudgetStatus(month).catch(() => null);
-      const res = isEdit ? await api.put(`/api/expense/${id}`, payload) : await api.post('/api/expense', payload);
+      let saved;
+      if (isEdit) {
+        saved = (await api.put(`/api/expense/${id}`, payload)).data;
+      } else {
+        const result = await createExpense(payload);
+        if (result.queued) {
+          toast('You are offline. The expense is saved on this device and will sync when you reconnect.', 'warning', 6000);
+          if (addAnother) setForm({ ...empty, category: form.category, date: form.date });
+          else navigate('/expenses', { replace: true });
+          return;
+        }
+        saved = result.expense;
+      }
       toast(isEdit ? 'Expense updated' : 'Expense added', 'success');
       const after = await fetchBudgetStatus(month).catch(() => null);
       newAlerts(before, after).forEach((a) => toast(a.text, a.level === 'over' ? 'error' : 'warning', 8000));
       if (!isEdit && addAnother) {
         setForm({ ...empty, category: form.category, date: form.date });
       } else {
-        navigate(`/expenses/${res.data.id}`, { replace: true });
+        navigate(`/expenses/${saved.id}`, { replace: true });
       }
     } catch (err) {
       setErrors(fieldErrors(err));

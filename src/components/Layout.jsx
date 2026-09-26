@@ -1,6 +1,8 @@
 import {
-  ChartBar, DownloadSimple, House, Monitor, Moon, Plus, Receipt, SignOut, Sun, Target, UserCircle,
+  ChartBar, DeviceMobile, DownloadSimple, House, Monitor, Moon, Plus, Receipt, SignOut, Sun, Target, UserCircle,
 } from '../lib/icons';
+import { canPromptInstall, isIos, isStandalone, onInstallChange, promptInstall } from '../lib/install';
+import SyncStatus from './SyncStatus';
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { clearToken } from '../lib/api';
@@ -16,7 +18,7 @@ const LINKS = [
 const MOBILE_LINKS = [
   { to: '/', label: 'Home', icon: House, end: true },
   { to: '/expenses', label: 'Expenses', icon: Receipt, end: true },
-  { to: '/expenses/new', label: 'Add', icon: Plus, primary: true },
+  { to: '/quick-add', label: 'Add', icon: Plus, primary: true },
   { to: '/budgets', label: 'Budgets', icon: Target },
   { to: '/insights', label: 'Insights', icon: ChartBar },
 ];
@@ -62,8 +64,17 @@ const linkClass = ({ isActive }) =>
     isActive ? 'bg-subtle font-medium text-ink' : 'text-muted hover:text-ink'
   }`;
 
+function useInstallable() {
+  const [can, setCan] = useState(canPromptInstall);
+  useEffect(() => onInstallChange(() => setCan(canPromptInstall())), []);
+  return can;
+}
+
 function AccountMenu({ theme, setTheme, onLogout }) {
   const [open, setOpen] = useState(false);
+  const [iosHelp, setIosHelp] = useState(false);
+  const installable = useInstallable();
+  const showIosHelp = !installable && isIos() && !isStandalone();
   const ref = useRef(null);
   const location = useLocation();
 
@@ -94,6 +105,17 @@ function AccountMenu({ theme, setTheme, onLogout }) {
           <Link to="/export" role="menuitem" className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm hover:bg-subtle md:hidden">
             <DownloadSimple size={17} className="text-muted" /> Export
           </Link>
+          {(installable || showIosHelp) && (
+            <button role="menuitem" onClick={() => (installable ? promptInstall().then(() => setOpen(false)) : setIosHelp(!iosHelp))}
+              className="flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm hover:bg-subtle">
+              <DeviceMobile size={17} className="text-muted" /> Install app
+            </button>
+          )}
+          {iosHelp && (
+            <p className="mx-2.5 mb-1 rounded-md bg-subtle px-2.5 py-2 text-xs leading-relaxed text-ink-soft">
+              In Safari, tap the Share button, then Add to Home Screen.
+            </p>
+          )}
           <div className="my-1.5 border-t border-line" />
           <p className="eyebrow px-2.5 pb-1.5 pt-1">Appearance</p>
           <div className="grid grid-cols-3 gap-1 px-1 pb-1" role="radiogroup" aria-label="Theme">
@@ -120,6 +142,9 @@ function AccountMenu({ theme, setTheme, onLogout }) {
 
 export default function Layout() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
   const [theme, setTheme] = useTheme();
 
   const logout = () => {
@@ -140,6 +165,7 @@ export default function Layout() {
             {LINKS.map((l) => <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>{l.label}</NavLink>)}
           </nav>
           <div className="ml-auto flex items-center gap-1.5">
+            <SyncStatus />
             <NavLink to="/expenses/new" className="btn btn-primary hidden h-9 sm:inline-flex">
               <Plus size={15} weight="bold" /> Add expense
             </NavLink>

@@ -11,6 +11,7 @@ import Expenses from './pages/Expenses';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import Profile from './pages/Profile';
+import QuickAdd from './pages/QuickAdd';
 import SignUp from './pages/SignUp';
 import Spinner from './components/Spinner';
 
@@ -29,6 +30,7 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/expenses" element={<Expenses />} />
             <Route path="/expenses/new" element={<ExpenseForm />} />
+            <Route path="/quick-add" element={<QuickAdd />} />
             <Route path="/expenses/:id" element={<ExpenseDetail />} />
             <Route path="/expenses/:id/edit" element={<ExpenseForm />} />
             <Route path="/budgets" element={<Budgets />} />

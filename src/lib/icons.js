@@ -45,3 +45,8 @@ export { Warning } from '@phosphor-icons/react/dist/csr/Warning';
 export { WarningCircle } from '@phosphor-icons/react/dist/csr/WarningCircle';
 export { WarningOctagon } from '@phosphor-icons/react/dist/csr/WarningOctagon';
 export { X } from '@phosphor-icons/react/dist/csr/X';
+export { Backspace } from '@phosphor-icons/react/dist/csr/Backspace';
+export { CloudSlash } from '@phosphor-icons/react/dist/csr/CloudSlash';
+export { CloudArrowUp } from '@phosphor-icons/react/dist/csr/CloudArrowUp';
+export { DeviceMobile } from '@phosphor-icons/react/dist/csr/DeviceMobile';
+export { PencilSimpleLine } from '@phosphor-icons/react/dist/csr/PencilSimpleLine';

@@ -8,6 +8,7 @@ import { currentMonth, money, monthLabel, monthRange } from '../lib/format';
 import BudgetAlerts from '../components/BudgetAlerts';
 import CategoryIcon from '../components/CategoryIcon';
 import ExpenseRow from '../components/ExpenseRow';
+import { useSyncedVersion } from '../lib/useOffline';
 import PageHeader from '../components/PageHeader';
 import ProgressBar from '../components/ProgressBar';
 import StatusBadge from '../components/StatusBadge';
@@ -20,6 +21,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
+  const synced = useSyncedVersion();
 
   useEffect(() => {
     let cancelled = false;
@@ -37,7 +39,7 @@ export default function Dashboard() {
       .catch((err) => !cancelled && setError(errorMessage(err)))
       .finally(() => !cancelled && setLoading(false));
     return () => { cancelled = true; };
-  }, [month, reload]);
+  }, [month, reload, synced]);
 
   const isCurrent = month === currentMonth();
 
