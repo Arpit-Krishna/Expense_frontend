@@ -4,7 +4,6 @@ import { api, errorMessage } from '../lib/api';
 import { fetchBudgetStatus } from '../lib/budget';
 import { CATEGORIES, categoryInfo } from '../lib/categories';
 import { currentMonth, money } from '../lib/format';
-import { SALARY_PLAN } from '../lib/presets';
 import { useToast } from '../components/Toast';
 import ProgressBar from '../components/ProgressBar';
 import Spinner, { InlineSpinner } from '../components/Spinner';
@@ -51,11 +50,6 @@ export default function Budgets() {
   const leftOver = num(income) - fixedTotal - spendableTotal - num(savings);
 
   const toggleFixed = (name) => setFixed(fixed.includes(name) ? fixed.filter((f) => f !== name) : [...fixed, name]);
-
-  const loadPlan = () => {
-    apply(SALARY_PLAN);
-    toast('Salary plan loaded. Press Save budget to keep it.', 'info', 6000);
-  };
 
   const save = async (e) => {
     e.preventDefault();
@@ -116,29 +110,26 @@ export default function Budgets() {
 
   return (
     <form onSubmit={save} className="mx-auto max-w-3xl space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold">Budgets</h1>
-          <p className="text-sm muted">Set monthly limits. You get a warning at the alert level and a red alert when you go over.</p>
-        </div>
-        <button type="button" className="btn btn-secondary" onClick={loadPlan}>Load my salary plan</button>
+      <div>
+        <h1 className="text-2xl font-bold">Budgets</h1>
+        <p className="text-sm muted">Set monthly limits. You get a warning at the alert level and a red alert when you go over.</p>
       </div>
 
       {params.get('welcome') && (
         <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm dark:border-indigo-900 dark:bg-indigo-500/10">
-          Welcome! Press <b>Load my salary plan</b> to fill in your limits, check them, then press <b>Save budget</b>.
+          Welcome! Enter your salary, savings and category limits, then press <b>Save budget</b>.
         </div>
       )}
 
       <section className="card grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="income" className="label">Monthly take-home salary (₹)</label>
-          <input id="income" type="number" min="0" step="1000" inputMode="decimal" placeholder="e.g. 66000" className="input"
+          <input id="income" type="number" min="0" step="1000" inputMode="decimal" placeholder="e.g. 50000" className="input"
             value={income} onChange={(e) => setIncome(e.target.value)} />
         </div>
         <div>
           <label htmlFor="savings" className="label">Savings each month (₹)</label>
-          <input id="savings" type="number" min="0" step="500" inputMode="decimal" placeholder="e.g. 9500" className="input"
+          <input id="savings" type="number" min="0" step="500" inputMode="decimal" placeholder="e.g. 10000" className="input"
             value={savings} onChange={(e) => setSavings(e.target.value)} />
         </div>
         <div>
