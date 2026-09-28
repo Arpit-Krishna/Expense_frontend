@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { errorMessage, fieldErrors } from '../lib/api';
-import { Info, PaperPlaneTilt } from '../lib/icons';
+import { Info, PaperPlaneTilt, WarningCircle } from '../lib/icons';
 import { getEmailSettings, saveEmailSettings, sendTestEmail } from '../lib/recurring';
 import { useToast } from '../components/Toast';
 import PageHeader from '../components/PageHeader';
@@ -19,6 +19,7 @@ export default function EmailAlerts() {
   const [error, setError] = useState('');
   const [errors, setErrors] = useState({});
   const [busy, setBusy] = useState('');
+  const [testError, setTestError] = useState('');
 
   useEffect(() => {
     getEmailSettings()
@@ -47,11 +48,13 @@ export default function EmailAlerts() {
   const test = async () => {
     if (!(await save())) return;
     setBusy('test');
+    setTestError('');
     try {
       await sendTestEmail();
       toast(`Test email sent to ${form.email}`, 'success');
     } catch (err) {
-      toast(errorMessage(err, 'Could not send the test email.'), 'error');
+      // Keep the reason on screen: it usually says exactly what to change.
+      setTestError(errorMessage(err, 'Could not send the test email.'));
     } finally {
       setBusy('');
     }
@@ -75,8 +78,11 @@ export default function EmailAlerts() {
         <div>
           <label htmlFor="email" className="label">Send emails to</label>
           <input id="email" type="email" autoComplete="email" className={`input ${errors.email ? 'input-error' : ''}`}
-            placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-          {errors.email && <p className="field-error">{errors.email}</p>}
+            placeholder="you@example.com" value={form.email}
+            onChange={(e) => { setForm({ ...form, email: e.target.value }); setTestError(''); }} />
+          {errors.email ? <p className="field-error">{errors.email}</p> : (
+            <p className="mt-1 text-xs text-muted">Until a domain is verified in Resend, this must be the address you signed up to Resend with.</p>
+          )}
         </div>
         <ul className="divide-y divide-line border-t border-line">
           {OPTIONS.map((o) => (
@@ -93,6 +99,13 @@ export default function EmailAlerts() {
           ))}
         </ul>
       </section>
+
+      {testError && (
+        <div role="alert" className="rise flex gap-3 rounded-xl border border-bad/30 bg-bad-soft p-4 text-sm text-bad-ink">
+          <WarningCircle size={20} className="shrink-0" />
+          <p>{testError}</p>
+        </div>
+      )}
 
       <div className="flex flex-wrap justify-end gap-2">
         <button type="button" className="btn btn-secondary" onClick={test} disabled={!ready || !form.email.trim() || Boolean(busy)}>
