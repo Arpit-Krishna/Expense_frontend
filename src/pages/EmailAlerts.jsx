@@ -81,7 +81,7 @@ export default function EmailAlerts() {
             placeholder="you@example.com" value={form.email}
             onChange={(e) => { setForm({ ...form, email: e.target.value }); setTestError(''); }} />
           {errors.email ? <p className="field-error">{errors.email}</p> : (
-            <p className="mt-1 text-xs text-muted">Until a domain is verified in Resend, this must be the address you signed up to Resend with.</p>
+            <p className="mt-1 text-xs text-muted">Alerts can go to any address. Check your spam folder the first time and mark them as not spam.</p>
           )}
         </div>
         <ul className="divide-y divide-line border-t border-line">
